@@ -27,7 +27,4 @@ class Graph:
             print(v)
 
     def search(self, current, destination):
-        print([v for k, v in self.distance_weight.items() if k[0] == current and k[1] == destination])
-        # for key_one, key_two in self.distance_weight.keys():
-            # if key_one == key:
-                # return [value]
+        return [v for k, v in self.distance_weight.items() if k[0] == current and k[1] == destination]
