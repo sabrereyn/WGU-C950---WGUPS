@@ -19,8 +19,7 @@ class Package:
     retrieval.
 
     Attributes:
-        id: An integer that holds the package's id. Also used as a key
-        for hashtable.
+        id: An integer that holds the package's id. Also used as a key for hashtable.
         address: Package's address (delivery location).
         city: Package's city that address is located in.
         state: Package's state that address is located in.
@@ -85,6 +84,26 @@ class Package:
         self.delivered_time = time
 
 
+def SortByDeadline(hashtable):
+    sort_list = []
+    for i in range(len(hashtable.table)):
+        for j in hashtable.table[i]:
+            package = hashtable.search(j[0])
+            sort_list.append(hashtable.search(package.getID()))
+
+    sort_list = sorted(sort_list, key=lambda x: datetime.strptime(x.deadline, '%I:%M %p'))
+    for i in range(len(sort_list)):
+        print(sort_list[i])
+
+
+def GetPackageData(hashtable):
+    # Fetch packages from hash table
+    for i in range(len(hashtable.table)):
+        for j in hashtable.table[i]:
+            package = hashtable.search(j[0])
+            print(package)
+
+
 """Load package data from csv file and read rows into package object.
 
 Read package data from file and input them into a list. Length of list will
@@ -135,22 +154,3 @@ for i in range(len(p_list)):
     package = p_list[i]
     package_hashtable.insert(package.getID(), package)
 
-
-def SortByDeadline(hashtable):
-    sort_list = []
-    for i in range(len(hashtable.table)):
-        for j in hashtable.table[i]:
-            package = hashtable.search(j[0])
-            sort_list.append(hashtable.search(package.getID()))
-
-    sort_list = sorted(sort_list, key=lambda x: datetime.strptime(x.deadline, '%I:%M %p'))
-    for i in range(len(sort_list)):
-        print(sort_list[i])
-
-
-def GetPackageData(hashtable):
-    # Fetch packages from hash table
-    for i in range(len(hashtable.table)):
-        for j in hashtable.table[i]:
-            package = hashtable.search(j[0])
-            print(package)

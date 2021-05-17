@@ -24,7 +24,6 @@ def UrgentDeadline(hashtable):
 if __name__ == '__main__':
     first_truck = Truck()
     second_truck = Truck()
-    my_hash_table = Package.LoadPackageData("WGUPS Package File Modified.csv")
 
     # CSV.GetPackageData(my_hash_table)
     # my_distance_graph.print_graph()
