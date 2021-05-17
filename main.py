@@ -1,7 +1,8 @@
 # Name: Sabre Reyn Nakaahiki | Student ID: 001208343
 from datetime import datetime
 
-import CSV
+import Distances
+import Package
 from Graph import Graph
 from Trucks import Truck
 
@@ -36,10 +37,10 @@ if __name__ == '__main__':
     first_truck = Truck()
     second_truck = Truck()
     my_distance_graph = Graph()
-    my_hash_table = CSV.LoadPackageData("WGUPS Package File Modified.csv")
+    my_hash_table = Package.LoadPackageData("WGUPS Package File Modified.csv")
 
     # CSV.GetPackageData(my_hash_table)
-    CSV.LoadDistanceTable("WGUPS Distance Table.csv", my_distance_graph)
+    Distances.LoadDistanceTable("WGUPS Distance Table.csv", my_distance_graph)
     # my_distance_graph.print_graph()
     # my_distance_graph.search_graph('6351 South 900 East')
     # print(my_hash_table.search(7))
