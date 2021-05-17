@@ -19,15 +19,25 @@ class Package:
     retrieval.
 
     Attributes:
-        id: An integer that holds the package's id. Also used as a key for hashtable.
-        address: Package's address (delivery location).
-        city: Package's city that address is located in.
-        state: Package's state that address is located in.
-        zip_code: Package's zip code.
-        deadline: Delivery due time that package is suppose to arrive at location by.
-        weight: Package's weight
-        status: Package delivery status, the choices being "at hub", "en route", or "delivered".
-        delivered_time: Time of package's delivery
+
+        id : int
+            An integer that holds the package's id. Also used as a key for hashtable.
+        address : str
+            Package's address (delivery location).
+        city : str
+            Package's city that address is located in.
+        state : str
+            Package's state that address is located in.
+        zip_code : str
+            Package's zip code.
+        deadline : datetime
+            Delivery due time that package is suppose to arrive at location by.
+        weight : int
+            Package's weight
+        status : Enum
+            Package delivery status, the choices being "at hub", "en route", or "delivered".
+        delivered_time : datetime
+            Time of package's delivery
     """
 
     def __init__(self, package_id, address, city, state,
@@ -111,11 +121,7 @@ be used for hashtable capacity calculation. Package's ID, address, city,
 state, zip code and deadline will be read into package object. Deadline is
 converted into a time object and packages with EOD deadlines will be converted
 into 8:00pm (self-declared 'End of Day' time).
-
-:param filename: Name of csv file to read from
-:return: hash table data structure filled with package object using package's id as key.
 """
-
 with open("WGUPS Package File Modified.csv") as packages:
     p_list = []
     time_format = '%I:%M %p'
