@@ -6,5 +6,9 @@ class Truck:
     def LoadTruck(self, packages):
         for i in range(len(packages)):
             self.capacity -= 1
+            if self.capacity == 0:
+                break
+
+        # Deliver_Package()
 
     # def Deliver_Package(self):
