@@ -5,7 +5,7 @@ from enum import Enum
 
 from HashTable import ChainingHashTable
 
-
+"""Enumerate package's status"""
 class PackageStatus(Enum):
     AT_HUB = 1
     ENROUTE = 2
@@ -24,10 +24,11 @@ class Package:
         address: Package's address (delivery location).
         city: Package's city that address is located in.
         state: Package's state that address is located in.
-        zip: Package's zip code.
+        zip_code: Package's zip code.
         deadline: Delivery due time that package is suppose to arrive at location by.
         weight: Package's weight
         status: Package delivery status, the choices being "at hub", "en route", or "delivered".
+        delivered_time: Time of package's delivery
     """
 
     def __init__(self, package_id, address, city, state,

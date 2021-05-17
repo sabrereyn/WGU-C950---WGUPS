@@ -34,6 +34,12 @@ class ChainingHashTable:
 
 
 def LargestPrimeFactor(num):
+    """Calculate greatest prime factor using length of list
+
+    It is best practice to use greatest prime factor for hash table's
+    capacity. This method calculates the greatest prime factor using the
+    int passed in and returns the prime integer.
+    """
     p_factor = 1
     i = 2
 
