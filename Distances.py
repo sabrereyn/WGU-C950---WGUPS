@@ -1,6 +1,7 @@
 import csv
-from Graph import Graph
+import sys
 
+from Graph import Graph
 
 with open("WGUPS Distance Table.csv") as distances:
     distance_data = csv.reader(distances, delimiter=',')
@@ -31,7 +32,25 @@ def Check_Distance(start_address, next_address) -> float:
     distance = float(distance_graph.search(start_address, next_address))
     return distance
 
-# def Find_Shortest_Distance()
+
+def Find_Shortest_Distance(current_location, truck_list):
+    min_distance = sys.maxsize
+    distance_list = []
+    for i in range(len(truck_list)):
+        for j in range(len(truck_list))[i:]:
+            package = truck_list[j]
+            package_address = package.getAddress()
+            distance = distance_graph.search(current_location, package_address)
+            if distance < min_distance:
+                min_distance = distance
+                next_delivery = package
+                temp = truck_list[i]
+                truck_list[i] = next_delivery
+                truck_list[j] = temp
+        distance_list.append(min_distance)
+    return distance_list, truck_list
+
+
 """
     for i in range(len(hashtable.table)):
         for j in hashtable.table[i]:

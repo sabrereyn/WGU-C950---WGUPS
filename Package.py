@@ -155,16 +155,25 @@ with open("WGUPS Package File Modified.csv") as packages:
         # insert package object into package list
         p_list.append(p)
 
-p_list = sorted(p_list, key=lambda x: datetime.strptime(x.deadline, '%I:%M %p'))
-
-while first_truck.LoadTruck():
-    for i in range(len(p_list)):
-        first_truck.LoadTruck(p_list[i])
-    # if !first_truck.LoadTruck():
-        # first_truck.DeliverPackages()
 # Create hash table using length of package list for initial_capacity computation
 package_hashtable = ChainingHashTable(len(p_list))
 # Iterate through package list and insert elements into hash table using package's id as key
 for i in range(len(p_list)):
     package = p_list[i]
     package_hashtable.insert(package.getID(), package)
+
+# Sort list by deadline
+p_list.sort(key=lambda x: datetime.strptime(x.deadline, '%I:%M %p'))
+# first_truck_list = list(filter(lambda x: x.address == '195 W Oakland Ave', p_list))
+# for i in range(len(first_truck_list)):
+    # print(first_truck_list[i])
+
+for i in range(len(p_list)):
+    if first_truck.LoadTruck(p_list):
+        print(p_list[i])
+        first_truck.LoadTruck(p_list[i])
+    else:
+        first_truck.Deliver_Package()
+    if i == len(p_list):
+        first_truck.Deliver_Package()
+
