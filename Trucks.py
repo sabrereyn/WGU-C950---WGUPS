@@ -16,15 +16,14 @@ class Truck:
 
     def LoadTruck(self, packages):
         if self.capacity == 0:
-            # self.printTruckList()
             return False
         else:
             self.capacity -= 1
             self.truck_list.append(packages)
             return True
 
-    def printTruckList(self):
-        for i in self.truck_list:
+    def printTruckSelf(self):
+        for i in range(len(self.truck_list)):
             print(self.truck_list[i])
 
     def Deliver_Package(self):
@@ -36,9 +35,12 @@ class Truck:
         """
         distance_list, self.truck_list = Find_Shortest_Distance(self.current_location, self.truck_list)
         for i in range(len(distance_list)):
+            for j in range(len(self.truck_list)):
+                duration = float(distance_list[i] / self.SPEED) * 100
             print(self.truck_list[i])
-            print('Distance Traveled: ' + distance_list[i])
+            print(f'Distance traveled: {distance_list[i]}')
 
 
 first_truck = Truck()  # Priority Truck
+first_truck.setTime('8:00 PM')
 second_truck = Truck()  # Delayed and EOD packages

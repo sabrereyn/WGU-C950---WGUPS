@@ -33,20 +33,23 @@ def Check_Distance(start_address, next_address) -> float:
     return distance
 
 
-def Find_Shortest_Distance(current_location, truck_list):
-    min_distance = sys.maxsize
+def Find_Shortest_Distance(start, truck_list):
     distance_list = []
+    current_location = start
+    next_delivery = None
     for i in range(len(truck_list)):
+        min_distance = sys.maxsize
         for j in range(len(truck_list))[i:]:
             package = truck_list[j]
             package_address = package.getAddress()
             distance = distance_graph.search(current_location, package_address)
-            if distance < min_distance:
-                min_distance = distance
+            if distance[0] < min_distance:
+                min_distance = distance[0]
                 next_delivery = package
                 temp = truck_list[i]
                 truck_list[i] = next_delivery
                 truck_list[j] = temp
+        current_location = next_delivery.getAddress()
         distance_list.append(min_distance)
     return distance_list, truck_list
 

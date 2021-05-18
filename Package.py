@@ -10,6 +10,9 @@ from Trucks import first_truck
 
 
 class PackageStatus(Enum):
+    def __str__(self):
+        return str(self.name)
+
     AT_HUB = 1
     ENROUTE = 2
     DELIVERED = 3
@@ -53,7 +56,7 @@ class Package:
         self.zip_code = zip_code
         self.deadline = deadline
         self.weight = weight
-        self.status = PackageStatus.AT_HUB
+        self.status = PackageStatus(1)
         self.delivered_time = None
 
     def __str__(self):
@@ -165,15 +168,11 @@ for i in range(len(p_list)):
 # Sort list by deadline
 p_list.sort(key=lambda x: datetime.strptime(x.deadline, '%I:%M %p'))
 # first_truck_list = list(filter(lambda x: x.address == '195 W Oakland Ave', p_list))
-# for i in range(len(first_truck_list)):
-    # print(first_truck_list[i])
 
 for i in range(len(p_list)):
-    if first_truck.LoadTruck(p_list):
-        print(p_list[i])
-        first_truck.LoadTruck(p_list[i])
-    else:
+    if not first_truck.LoadTruck(p_list[i]):
         first_truck.Deliver_Package()
-    if i == len(p_list):
+    if i == len(p_list) - 1:
+        # first_truck.printTruckSelf()
         first_truck.Deliver_Package()
 
