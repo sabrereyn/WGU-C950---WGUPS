@@ -2,15 +2,23 @@ class Truck:
     def __init__(self):
         self.SPEED = 18
         self.capacity = 16
+        self.truck_list = []
         self.current_location = '4001 South 700 East'
         self.mileage = 0
+        self.leave_time = None
 
     def LoadTruck(self, packages):
-        for i in range(len(packages)):
+        if self.capacity == 0:
+            # Deliver_Package()
+            return False
+        else:
             self.capacity -= 1
-            if self.capacity == 0:
-                break
+            self.truck_list.append(packages)
+            return True
 
-        # Deliver_Package()
 
-    # def Deliver_Package(self):
+    def Deliver_Package(self):
+        
+
+first_truck = Truck()
+second_truck = Truck()
