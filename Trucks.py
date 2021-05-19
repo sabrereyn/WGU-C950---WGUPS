@@ -42,6 +42,8 @@ class Truck:
             travel_time = round(60 * (float(distance_list[i] / self.SPEED)))
             t_time = datetime.combine(date.today(), self.truck_time.time()) + timedelta(minutes=travel_time)
             self.truck_time = t_time
+            if i == len(distance_list) - 1:
+                continue
             package = self.truck_list[i]
             package.setStatus(3)
             package.setDeliveredTime(t_time)
