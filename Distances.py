@@ -1,26 +1,6 @@
-import csv
 import sys
 
-from Graph import Graph
-
-
-with open("WGUPS Distance Table.csv") as distances:
-    distance_data = csv.reader(distances, delimiter=',')
-    header_line = next(distance_data)  # End points
-    distance_graph = Graph()
-
-    # Iterate through rows
-    for row in distance_data:
-        start_point = row[0]
-        distance_graph.add_point(start_point)  # Add first element as starting point into graph
-
-        # Iterate through columns. If column is empty, continue on to next row.
-        # Else, get location of column and input into graph as end_point,
-        # Then get distance and input into graph as distance/weight.
-        for col in range(len(row))[1:]:
-            end_point = header_line[col]
-            distance_graph.add_point(end_point)
-            distance_graph.add_undirected_route(start_point, end_point, float(row[col]))  # Add route
+from CSV import distance_graph
 
 
 def Find_Shortest_Distance(start, truck_list):

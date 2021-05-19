@@ -1,20 +1,23 @@
 # Package Class
-import csv
 from datetime import datetime
 from enum import Enum
-from Trucks import first_truck
-from HashTable import ChainingHashTable
 
 """Enumerate package's status"""
 
 
 class PackageStatus(Enum):
-    def __str__(self):
-        return str(self.name)
+    """Enumerate package's status"""
 
     AT_HUB = 1
     ENROUTE = 2
     DELIVERED = 3
+
+    def __str__(self):
+        """When calling the package status, print string value of enums's name
+
+        :return: string value of enum's name
+        """
+        return str(self.name)
 
 
 class Package:
@@ -119,61 +122,3 @@ def GetPackageData(hashtable):
             package = hashtable.search(j[0])
             print(package)
 
-
-"""Load package data from csv file and read rows into package object.
-
-Read package data from file and input them into a list. Length of list will
-be used for hashtable capacity calculation. Package's ID, address, city,
-state, zip code and deadline will be read into package object. Deadline is
-converted into a time object and packages with EOD deadlines will be converted
-into 8:00pm (self-declared 'End of Day' time).
-"""
-with open("WGUPS Package File Modified.csv") as packages:
-    p_list = []
-    time_format = '%I:%M %p'
-
-    package_data = csv.reader(packages, delimiter=',')
-    next(package_data)  # Skip header
-    for package in package_data:
-        p_id = int(package[0])
-        p_address = str(package[1])
-        p_city = str(package[2])
-        p_state = str(package[3])
-        p_zip = str(package[4])
-        p_weight = int(package[6])
-
-        # Cast deadline into time objects. If deadlines are EOD, convert them into 8 PM
-        # Else keep deadline times as they are
-        if str(package[5]) == 'EOD':
-            p_deadline = datetime.now().replace(hour=20, minute=0)
-        else:
-            str_time = package[5].replace(' ', ':')
-            time_list = str_time.split(':')
-            if "PM" in package[5]:
-                p_deadline = datetime.now().replace(hour=int(time_list[0]) + 12, minute=int(time_list[1]))
-            else:
-                p_deadline = datetime.now().replace(hour=int(time_list[0]), minute=int(time_list[1]))
-
-        # package object
-        p = Package(p_id, p_address, p_city, p_state, p_zip, p_deadline, p_weight)
-
-        # insert package object into package list
-        p_list.append(p)
-
-# Create hash table using length of package list for initial_capacity computation
-package_hashtable = ChainingHashTable(len(p_list))
-# Iterate through package list and insert elements into hash table using package's id as key
-for i in range(len(p_list)):
-    package = p_list[i]
-    package_hashtable.insert(package.getID(), package)
-
-# Sort list by deadline
-# p_list.sort(key=lambda x: x.deadline)
-first_truck.LoadTruckAgenda(p_list, package_hashtable)
-"""
-for i in range(len(p_list)):
-    if not first_truck.LoadTruck(p_list[i], package_hashtable):
-        first_truck.Deliver_Package(package_hashtable)
-    if i == len(p_list) - 1:
-        first_truck.Deliver_Package(package_hashtable)
-"""

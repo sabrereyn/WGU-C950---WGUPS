@@ -20,7 +20,7 @@ class Truck:
         for i in range(len(package_list)):
             delivery_list.append(package_list[i])
 
-        end_of_day = datetime.now().replace(hour=20, minute=0)
+        end_of_day = datetime.now().replace(hour=19, minute=0)
         priority_list = list(filter(lambda x: x.deadline.time() < end_of_day.time(), delivery_list))
         non_priority_list = list(filter(lambda x: x.deadline.time() == end_of_day.time(), delivery_list))
 
