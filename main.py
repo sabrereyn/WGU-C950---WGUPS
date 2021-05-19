@@ -1,10 +1,7 @@
 # Name: Sabre Reyn Nakaahiki | Student ID: 001208343
 from datetime import datetime
 
-import Distances
 import Package
-from Graph import Graph
-from Trucks import Truck
 
 
 def UrgentDeadline(hashtable):
@@ -21,7 +18,7 @@ def UrgentDeadline(hashtable):
         print(urgent_list[i])
 
 
-if __name__ == '__main__':
+class Main:
 
 
     # CSV.GetPackageData(my_hash_table)

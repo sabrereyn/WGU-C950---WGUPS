@@ -8,28 +8,39 @@ class ChainingHashTable:
         for i in range(initial_capacity):
             self.table.append([])
 
+    def Get_Bucket_List(self, key):
+        bucket = hash(key) % len(self.table)
+        bucket_list = self.table[bucket]
+        return bucket_list
+
     # Insert package into the hash table
     def insert(self, key, package):
         # Get bucket list
-        bucket = hash(key) % len(self.table)
-        bucket_list = self.table[bucket]
+        bucket_list = self.Get_Bucket_List(key)
 
         # insert the item to the end of the bucket list
         key_value = [key, package]
         bucket_list.append(key_value)
         return True
 
+    def update(self, key, value):
+        # update key if it is already in the bucket
+        bucket_list = self.Get_Bucket_List(key)
+        for key_value in bucket_list:
+            if key_value[0] == key:
+                key_value[1] = value
+                return True
+
     # Searches for an item with matching
     def search(self, key):
         # get the bucket list where this key would be.
-        bucket = hash(key) % len(self.table)
-        bucket_list = self.table[bucket]
+        bucket_list = self.Get_Bucket_List(key)
 
         # search for the key in the bucket list
-        for kv in bucket_list:
+        for key_value in bucket_list:
             # print (key_value)
-            if kv[0] == key:
-                return kv[1]  # value
+            if key_value[0] == key:
+                return key_value[1]  # value
         return None
 
 

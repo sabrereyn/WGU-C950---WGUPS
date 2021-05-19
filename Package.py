@@ -2,7 +2,6 @@
 import csv
 from datetime import datetime
 from enum import Enum
-
 from HashTable import ChainingHashTable
 from Trucks import first_truck
 
@@ -61,12 +60,13 @@ class Package:
 
     def __str__(self):
         """Returns string when printing package object to console."""
-        if self.status == PackageStatus.AT_HUB or PackageStatus.ENROUTE:
+        if self.status == PackageStatus(3):
             return f"{self.id}, {self.address}, {self.city}, {self.state}, {self.zip_code}," \
-                   f" {self.deadline}, {self.weight}, {self.status}"
+                   f" {self.deadline.time().strftime('%I:%M %p')}, {self.weight}, {self.status}" \
+                   f" at {self.delivered_time.time().strftime('%I:%M %p')}"
         else:
             return f"{self.id}, {self.address}, {self.city}, {self.state}, {self.zip_code}," \
-                   f" {self.deadline}, {self.weight}, {self.status} delivered at {self.delivered_time}"
+                   f" {self.deadline.time().strftime('%I:%M %p')}, {self.weight}, {self.status}"
 
     def getID(self):
         return self.id
@@ -93,7 +93,7 @@ class Package:
         return self.status
 
     def setStatus(self, status):
-        self.status = status
+        self.status = PackageStatus(status)
         return True
 
     def setDeliveredTime(self, time):
@@ -145,11 +145,11 @@ with open("WGUPS Package File Modified.csv") as packages:
         # Else keep deadline times as they are
         if str(package[5]) == 'EOD':
             time_string = '8:00 PM'
-            datetime_string = datetime.strptime(time_string, time_format)  # Convert into datetime object
-            p_deadline = datetime_string.time().strftime(time_format)  # Drop date and format time for easy reading
+            p_deadline = datetime.strptime(time_string, time_format)  # Convert into datetime object
+            # p_deadline = datetime_string.time().strftime(time_format)  # Drop date and format time for easy reading
         else:
-            datetime_string = datetime.strptime(package[5], time_format)  # Convert into datetime object
-            p_deadline = datetime_string.time().strftime(time_format)  # Drop date and format time for easy reading
+            p_deadline = datetime.strptime(package[5], time_format)  # Convert into datetime object
+            # p_deadline = datetime_string.time().strftime(time_format)  # Drop date and format time for easy reading
         p_weight = int(package[6])
 
         # package object
@@ -166,13 +166,13 @@ for i in range(len(p_list)):
     package_hashtable.insert(package.getID(), package)
 
 # Sort list by deadline
-p_list.sort(key=lambda x: datetime.strptime(x.deadline, '%I:%M %p'))
+# p_list.sort(key=lambda x: datetime.strptime(x.deadline, '%I:%M %p'))
+p_list.sort(key=lambda x: x.deadline)
 # first_truck_list = list(filter(lambda x: x.address == '195 W Oakland Ave', p_list))
 
 for i in range(len(p_list)):
     if not first_truck.LoadTruck(p_list[i]):
-        first_truck.Deliver_Package()
+        first_truck.Deliver_Package(package_hashtable)
     if i == len(p_list) - 1:
-        # first_truck.printTruckSelf()
-        first_truck.Deliver_Package()
+        first_truck.Deliver_Package(package_hashtable)
 

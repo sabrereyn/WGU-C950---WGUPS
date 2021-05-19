@@ -22,18 +22,26 @@ with open("WGUPS Distance Table.csv") as distances:
             distance_graph.add_undirected_route(start_point, end_point, float(row[col]))  # Add route
 
 
-def Check_Distance(start_address, next_address) -> float:
-    """ Check the distance between two addresses and return a float type
-
-    :param start_address: starting (or current) address we're starting from
-    :param next_address: address that we're considering delivering to
-    :return: distance between two addresses
-    """
-    distance = float(distance_graph.search(start_address, next_address))
-    return distance
-
-
 def Find_Shortest_Distance(start, truck_list):
+    """ Sorting method that uses the Greedy algorithm approach.
+
+    To summarize in one sentence: this approach basically iterates through the list provided to find
+    the shortest distance from current location to a package's address. This is done through two for loops, the first
+    one to indicate where we should start looking for the shortest distance from, and the second one
+    to actually look through the list and compare distances until the minimal one is found in comparison
+    with the current location. Once a minimal distance is found the current location is updated; the distance
+    is noted and placed within a distance list using the same index the corresponding package will have in the
+    package list; and the package is placed to closer to the top.
+
+    So this sorting method does two things: Find the shortest distance between two locations and sort the
+    list in the order the minimal distances was found to then be returned back to the truck for easy delivery.
+    The start of the second loop will always move forward with the first loop,
+    never touching the previously sorted packages.
+
+    :param start: location the truck is located at already
+    :param truck_list: the list of packages in the truck
+    :return: list of distances, sorted truck_list
+    """
     distance_list = []
     current_location = start
     next_delivery = None
@@ -52,17 +60,3 @@ def Find_Shortest_Distance(start, truck_list):
         current_location = next_delivery.getAddress()
         distance_list.append(min_distance)
     return distance_list, truck_list
-
-
-"""
-    for i in range(len(hashtable.table)):
-        for j in hashtable.table[i]:
-            package = hashtable.search(j[0])
-            next_address = package.getAddress()
-            distance = graph.search_graph(current_address, next_address)
-            if distance < min_distance:
-                min_distance = distance
-                next_delivery = package
-    total_mileage += min_distance
-    delivery_list.append(next_delivery)
-"""
