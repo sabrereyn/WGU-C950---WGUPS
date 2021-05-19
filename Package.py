@@ -140,17 +140,19 @@ with open("WGUPS Package File Modified.csv") as packages:
         p_city = str(package[2])
         p_state = str(package[3])
         p_zip = str(package[4])
+        p_weight = int(package[6])
 
         # Cast deadline into time objects. If deadlines are EOD, convert them into 8 PM
         # Else keep deadline times as they are
         if str(package[5]) == 'EOD':
-            time_string = '8:00 PM'
-            p_deadline = datetime.strptime(time_string, time_format)  # Convert into datetime object
-            # p_deadline = datetime_string.time().strftime(time_format)  # Drop date and format time for easy reading
+            p_deadline = datetime.now().replace(hour=20, minute=0)
         else:
-            p_deadline = datetime.strptime(package[5], time_format)  # Convert into datetime object
-            # p_deadline = datetime_string.time().strftime(time_format)  # Drop date and format time for easy reading
-        p_weight = int(package[6])
+            str_time = package[5].replace(' ', ':')
+            time_list = str_time.split(':')
+            if "PM" in package[5]:
+                p_deadline = datetime.now().replace(hour=int(time_list[0]) + 12, minute=int(time_list[1]))
+            else:
+                p_deadline = datetime.now().replace(hour=int(time_list[0]), minute=int(time_list[1]))
 
         # package object
         p = Package(p_id, p_address, p_city, p_state, p_zip, p_deadline, p_weight)
@@ -166,13 +168,13 @@ for i in range(len(p_list)):
     package_hashtable.insert(package.getID(), package)
 
 # Sort list by deadline
-# p_list.sort(key=lambda x: datetime.strptime(x.deadline, '%I:%M %p'))
 p_list.sort(key=lambda x: x.deadline)
 # first_truck_list = list(filter(lambda x: x.address == '195 W Oakland Ave', p_list))
-
+first_truck.LoadTruckAgenda(p_list)
+"""
 for i in range(len(p_list)):
     if not first_truck.LoadTruck(p_list[i], package_hashtable):
         first_truck.Deliver_Package(package_hashtable)
     if i == len(p_list) - 1:
         first_truck.Deliver_Package(package_hashtable)
-
+"""

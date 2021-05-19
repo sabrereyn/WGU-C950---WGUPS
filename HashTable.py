@@ -50,6 +50,9 @@ def LargestPrimeFactor(num):
     It is best practice to use greatest prime factor for hash table's
     capacity. This method calculates the greatest prime factor using the
     int passed in and returns the prime integer.
+
+    :param num: length of list
+    :return: prime number for hashtable capacity
     """
     p_factor = 1
     i = 2

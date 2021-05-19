@@ -65,3 +65,9 @@ def Find_Shortest_Distance(start, truck_list):
             to_hub = distance_graph.search(current_location, hub)
             distance_list.append(to_hub[0])
     return distance_list, truck_list
+
+
+def Time_Formula(distance):
+    SPEED = 18
+    delivered_time = round(60 * (float(distance / 18)))
+    return delivered_time

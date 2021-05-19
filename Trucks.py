@@ -15,6 +15,16 @@ class Truck:
     def setTime(self, h, m):
         self.truck_time = self.truck_time.replace(hour=h, minute=m)
 
+    def LoadTruckAgenda(self, package_list):
+        for i in range(len(package_list)):
+            self.truck_list.append(package_list[i])
+
+        end_of_day = datetime.now().replace(hour=20, minute=0)
+        priority_list = list(filter(lambda x: x.deadline.time() < end_of_day.time(), self.truck_list))
+        for i in range(len(priority_list)):
+            package = priority_list[i]
+            print(package)
+
     def LoadTruck(self, packages, p_hashtable):
         if self.capacity == 0:
             return False
