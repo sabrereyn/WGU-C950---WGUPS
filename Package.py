@@ -171,7 +171,7 @@ p_list.sort(key=lambda x: x.deadline)
 # first_truck_list = list(filter(lambda x: x.address == '195 W Oakland Ave', p_list))
 
 for i in range(len(p_list)):
-    if not first_truck.LoadTruck(p_list[i]):
+    if not first_truck.LoadTruck(p_list[i], package_hashtable):
         first_truck.Deliver_Package(package_hashtable)
     if i == len(p_list) - 1:
         first_truck.Deliver_Package(package_hashtable)

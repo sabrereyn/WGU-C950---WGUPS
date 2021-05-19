@@ -15,11 +15,14 @@ class Truck:
     def setTime(self, h, m):
         self.truck_time = self.truck_time.replace(hour=h, minute=m)
 
-    def LoadTruck(self, packages):
+    def LoadTruck(self, packages, p_hashtable):
         if self.capacity == 0:
             return False
         else:
             self.capacity -= 1
+            package = packages
+            package.setStatus(2)
+            p_hashtable.update(package.getID(), package)
             self.truck_list.append(packages)
             return True
 
@@ -33,6 +36,8 @@ class Truck:
         Call greedy algorithm to find packages with the shortest distance to
         current location. After package is delivered update status in hashtable,
         delete package from truck's list and move on to next package.
+
+        :param package_hashtable: hashtable of packages for updating package's status
         """
         # print(self.truck_time)
         distance_list, self.truck_list = Find_Shortest_Distance(self.current_location, self.truck_list)
