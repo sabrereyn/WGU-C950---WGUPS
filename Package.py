@@ -2,8 +2,8 @@
 import csv
 from datetime import datetime
 from enum import Enum
-from HashTable import ChainingHashTable
 from Trucks import first_truck
+from HashTable import ChainingHashTable
 
 """Enumerate package's status"""
 
@@ -168,8 +168,8 @@ for i in range(len(p_list)):
     package_hashtable.insert(package.getID(), package)
 
 # Sort list by deadline
-p_list.sort(key=lambda x: x.deadline)
-first_truck.LoadTruckAgenda(p_list)
+# p_list.sort(key=lambda x: x.deadline)
+first_truck.LoadTruckAgenda(p_list, package_hashtable)
 """
 for i in range(len(p_list)):
     if not first_truck.LoadTruck(p_list[i], package_hashtable):

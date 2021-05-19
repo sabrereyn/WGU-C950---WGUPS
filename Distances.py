@@ -3,6 +3,7 @@ import sys
 
 from Graph import Graph
 
+
 with open("WGUPS Distance Table.csv") as distances:
     distance_data = csv.reader(distances, delimiter=',')
     header_line = next(distance_data)  # End points

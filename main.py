@@ -1,26 +1,9 @@
 # Name: Sabre Reyn Nakaahiki | Student ID: 001208343
-from datetime import datetime
-
-import Package
-
-
-def UrgentDeadline(hashtable):
-    urgent_list = []
-    for i in range(len(hashtable.table)):
-        for j in hashtable.table[i]:
-            package = hashtable.search(j[0])
-            if str(package.getDeadline()) != '08:00 PM':
-                urgent_list.append(hashtable.search(package.getID()))
-                # urgent_list.append(package.getID())
-
-    urgent_list = sorted(urgent_list, key=lambda x: datetime.strptime(x.deadline, '%I:%M %p'))
-    for i in range(len(urgent_list)):
-        print(urgent_list[i])
-
+# import Package
 
 class Main:
 
-
+    import Package
     # CSV.GetPackageData(my_hash_table)
     # my_distance_graph.print_graph()
     # my_distance_graph.search_graph('6351 South 900 East')

@@ -15,16 +15,18 @@ class Truck:
     def setTime(self, h, m):
         self.truck_time = self.truck_time.replace(hour=h, minute=m)
 
-    def LoadTruckAgenda(self, package_list):
+    def LoadTruckAgenda(self, package_list, package_hashtable):
         delivery_list = []
         for i in range(len(package_list)):
             delivery_list.append(package_list[i])
 
         end_of_day = datetime.now().replace(hour=20, minute=0)
         priority_list = list(filter(lambda x: x.deadline.time() < end_of_day.time(), delivery_list))
+        non_priority_list = list(filter(lambda x: x.deadline.time() == end_of_day.time(), delivery_list))
+
         for i in range(len(priority_list)):
-            package = priority_list[i]
-            print(package)
+            if not self.LoadTruck(priority_list[i], package_hashtable) or i == len(priority_list) - 1:
+                self.Deliver_Package(package_hashtable)
 
     def LoadTruck(self, packages, p_hashtable):
         if self.capacity == 0:
@@ -65,6 +67,7 @@ class Truck:
             package.setDeliveredTime(t_time)
             package_hashtable.update(package.getID(), package)
             print(package)
+        print(f'Mileage: {self.mileage}')
 
 
 first_truck = Truck()  # Priority Truck
