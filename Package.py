@@ -169,7 +169,6 @@ for i in range(len(p_list)):
 
 # Sort list by deadline
 p_list.sort(key=lambda x: x.deadline)
-# first_truck_list = list(filter(lambda x: x.address == '195 W Oakland Ave', p_list))
 first_truck.LoadTruckAgenda(p_list)
 """
 for i in range(len(p_list)):
