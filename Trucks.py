@@ -1,3 +1,4 @@
+from CSV import package_hashtable
 from Distances import Find_Shortest_Distance
 from datetime import timedelta, datetime, date
 
@@ -15,9 +16,10 @@ class Truck:
     def setTime(self, h, m):
         self.truck_time = self.truck_time.replace(hour=h, minute=m)
 
-    def LoadTruckAgenda(self, package_list, package_hashtable):
+    def LoadTruckAgenda(self, package_list):
         delivery_list = []
         for i in range(len(package_list)):
+            print(package_list[i])
             delivery_list.append(package_list[i])
 
         end_of_day = datetime.now().replace(hour=19, minute=0)
@@ -25,11 +27,16 @@ class Truck:
         non_priority_list = list(filter(lambda x: x.deadline.time() > end_of_day.time(), delivery_list))
 
         for i in range(len(priority_list)):
-            if not self.LoadTruck(priority_list[i], package_hashtable) or i == len(priority_list) - 1:
-                self.Deliver_Package(package_hashtable)
+            if not self.LoadTruck(priority_list[i], package_hashtable):
+                # self.Deliver_Package(package_hashtable)
+                pass
 
         for i in range(len(non_priority_list)):
-            print(non_priority_list[i])
+            if not self.LoadTruck(non_priority_list[i], package_hashtable) or i == len(non_priority_list) - 1:
+                # self.Deliver_Package(package_hashtable)
+                self.Deliver_Package(package_hashtable)
+
+                pass
 
     def LoadTruck(self, packages, p_hashtable):
         if self.capacity == 0:
