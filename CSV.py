@@ -1,5 +1,6 @@
 import csv
 from datetime import datetime
+import random
 
 from Graph import Graph
 from HashTable import ChainingHashTable
@@ -35,8 +36,6 @@ with open("WGUPS Package File Modified.csv") as packages:
     """
     p_list = []
     time_format = '%I:%M %p'
-    first_truck_priority_list = []
-    second_truck_priority_list = []
 
     package_data = csv.reader(packages, delimiter=',')
     next(package_data)  # Skip header
@@ -53,10 +52,11 @@ with open("WGUPS Package File Modified.csv") as packages:
         # Else change it to 8:00 AM.
         try:
             if package[7]:
-                notes = str(package[7])
-                if "Delayed" in notes:
+                p_notes = str(package[7])
+                if "Delayed" in p_notes:
                     p_status = datetime.now().replace(hour=9, minute=5)
         except IndexError:
+            p_notes = "N/A"
             p_status = datetime.now().replace(hour=8, minute=0)
             pass
 
@@ -73,15 +73,42 @@ with open("WGUPS Package File Modified.csv") as packages:
                 p_deadline = datetime.now().replace(hour=int(time_list[0]), minute=int(time_list[1]))
 
         # package object
-        p = Package(p_id, p_address, p_city, p_state, p_zip, p_deadline, p_weight, p_status)
+        p = Package(p_id, p_address, p_city, p_state, p_zip, p_deadline, p_weight, p_status, p_notes)
 
         # insert package object into package list
         p_list.append(p)
 
 # Create hash table using length of package list for initial_capacity computation
 package_hashtable = ChainingHashTable(len(p_list))
+first_truck_list = []
+second_truck_list = []
+end_of_day = datetime.now().replace(hour=19, minute=0)
 # Iterate through package list and insert elements into hash table using package's id as key
 for i in range(len(p_list)):
     package = p_list[i]
     package_hashtable.insert(package.getID(), package)
+    notes = package.getNotes()
+    delivery_time = package.getDeadline()
+    if delivery_time.time() <= end_of_day.time():
+        if notes != "N/A":
+            if "Delayed" in notes:
+                second_truck_list.append(package)
+            if "truck 2" in notes:
+                second_truck_list.append(package)
+        else:
+            first_truck_list.append(package)
+    p_list[i] = None
+
+random.shuffle(p_list)
+for i in range(int(len(p_list) / 2), 2):
+    try:
+        if not None:
+            first_package = p_list[i]
+            second_package = p_list[i + 1]
+            first_truck_list.append(first_package)
+            second_truck_list.append(second_package)
+    except IndexError:
+        pass
+
+
 

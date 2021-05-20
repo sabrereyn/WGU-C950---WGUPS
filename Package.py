@@ -48,7 +48,7 @@ class Package:
     """
 
     def __init__(self, package_id, address, city, state,
-                 zip_code, deadline, weight, time_at_status):
+                 zip_code, deadline, weight, time_at_status, notes):
         """Init function for Package instances."""
         self.id = package_id
         self.address = address
@@ -58,7 +58,7 @@ class Package:
         self.deadline = deadline
         self.weight = weight
         self.status = {PackageStatus(1): time_at_status, PackageStatus(2): "N/A", PackageStatus(3): "N/A"}
-        # self.delivered_time = None
+        self.notes = notes
 
     def __str__(self):
         """Returns string when printing package object to console."""
@@ -110,6 +110,9 @@ class Package:
         for k in self.status.items():
             self.status[PackageStatus(status)] = time
         return True
+
+    def getNotes(self):
+        return self.notes
 
 
 def SortByDeadline(hashtable):
