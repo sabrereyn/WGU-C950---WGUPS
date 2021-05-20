@@ -47,6 +47,10 @@ with open("WGUPS Package File Modified.csv") as packages:
         p_state = str(package[3])
         p_zip = str(package[4])
         p_weight = int(package[6])
+
+        # Check to see if there are notes. If there are, check to see if the word 'Delayed'
+        # If delayed, reflect the status time of the package to 9:05 AM (the time it'll arrive at the hub).
+        # Else change it to 8:00 AM.
         try:
             if package[7]:
                 notes = str(package[7])
@@ -68,8 +72,6 @@ with open("WGUPS Package File Modified.csv") as packages:
             else:
                 p_deadline = datetime.now().replace(hour=int(time_list[0]), minute=int(time_list[1]))
 
-
-
         # package object
         p = Package(p_id, p_address, p_city, p_state, p_zip, p_deadline, p_weight, p_status)
 
@@ -82,7 +84,4 @@ package_hashtable = ChainingHashTable(len(p_list))
 for i in range(len(p_list)):
     package = p_list[i]
     package_hashtable.insert(package.getID(), package)
-
-# Sort list by deadline
-# p_list.sort(key=lambda x: x.deadline)
 
