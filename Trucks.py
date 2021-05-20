@@ -16,53 +16,53 @@ class Truck:
     def setTime(self, h, m):
         self.truck_time = self.truck_time.replace(hour=h, minute=m)
 
-    def LoadTruckAgenda(self, package_list):
-        delivery_list = []
+    def LoadPackageList(self, package_list):
         for i in range(len(package_list)):
-            print(package_list[i])
-            delivery_list.append(package_list[i])
+            self.truck_list.append(package_list[i])
+
+    def LoadTruckAgenda(self):
+        delivery_list = []
 
         end_of_day = datetime.now().replace(hour=19, minute=0)
-        priority_list = list(filter(lambda x: x.deadline.time() <= end_of_day.time(), delivery_list))
-        non_priority_list = list(filter(lambda x: x.deadline.time() > end_of_day.time(), delivery_list))
+        priority_list = list(filter(lambda x: x.deadline.time() <= end_of_day.time(), self.truck_list))
+        non_priority_list = list(filter(lambda x: x.deadline.time() > end_of_day.time(), self.truck_list))
 
-        for i in range(len(priority_list)):
-            if not self.LoadTruck(priority_list[i], package_hashtable):
-                # self.Deliver_Package(package_hashtable)
-                pass
+        if self.truck_list:
+            if priority_list:
+                for i in range(len(priority_list)):
+                    if not self.LoadTruck(priority_list[i], delivery_list):
+                        self.Deliver_Package(delivery_list)
+            if non_priority_list:
+                for i in range(len(non_priority_list)):
+                    if not self.LoadTruck(non_priority_list[i], delivery_list) or i == len(non_priority_list) - 1:
+                        # self.Deliver_Package(package_hashtable)
+                        self.Deliver_Package(delivery_list)
 
-        for i in range(len(non_priority_list)):
-            if not self.LoadTruck(non_priority_list[i], package_hashtable) or i == len(non_priority_list) - 1:
-                # self.Deliver_Package(package_hashtable)
-                self.Deliver_Package(package_hashtable)
-
-                pass
-
-    def LoadTruck(self, packages, p_hashtable):
+    def LoadTruck(self, packages, delivery_list):
         if self.capacity == 0:
             return False
         else:
             self.capacity -= 1
             package = packages
             package.setStatus(2, self.truck_time)
-            p_hashtable.update(package.getID(), package)
-            self.truck_list.append(packages)
+            package_hashtable.update(package.getID(), package)
+            delivery_list.append(packages)
+            self.truck_list.remove(packages)
             return True
 
     def printTruckSelf(self):
         for i in range(len(self.truck_list)):
             print(self.truck_list[i])
 
-    def Deliver_Package(self, package_hashtable):
+    def Deliver_Package(self, delivery_list):
         """Deliver packages in truck's list
 
         Call greedy algorithm to find packages with the shortest distance to
         current location. After package is delivered update status in hashtable,
         delete package from truck's list and move on to next package.
 
-        :param package_hashtable: hashtable of packages for updating package's status
         """
-        distance_list, self.truck_list = Find_Shortest_Distance(self.current_location, self.truck_list, self.truck_time)
+        distance_list, delivered_list = Find_Shortest_Distance(self.current_location, delivery_list)
         for i in range(len(distance_list)):
             self.mileage += distance_list[i]
             # Find time with formula: time = 60 * (distance/speed)
@@ -73,13 +73,17 @@ class Truck:
             # Last element in distance_list has the distance back to hub, so ignore the package portion of loop
             if i == len(distance_list) - 1:
                 continue
-            package = self.truck_list[i]
+            package = delivered_list[i]
             package.setStatus(3, self.truck_time)
             package_hashtable.update(package.getID(), package)
             print(package)
         print(f'Mileage: {self.mileage}')
 
+        if self.truck_list:
+            self.LoadTruckAgenda()
+
 
 first_truck = Truck()  # Priority Truck
 first_truck.setTime(8, 0)
 second_truck = Truck()  # Delayed and EOD packages
+second_truck.setTime(9, 5)

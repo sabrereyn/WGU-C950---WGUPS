@@ -4,7 +4,7 @@ from datetime import datetime
 from CSV import distance_graph
 
 
-def Find_Shortest_Distance(start, truck_list, truck_time):
+def Find_Shortest_Distance(start, truck_list):
     """ Sorting method that uses the Greedy algorithm approach.
 
     To summarize in one sentence: this approach iterates through the list provided to find
@@ -39,7 +39,6 @@ def Find_Shortest_Distance(start, truck_list, truck_time):
 
         for j in range(len(truck_list))[i:]:
             package = truck_list[j]
-            deadline = package.getDeadline()
             package_address = package.getAddress()
             distance = distance_graph.search(current_location, package_address)
 

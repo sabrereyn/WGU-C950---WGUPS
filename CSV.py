@@ -58,7 +58,6 @@ with open("WGUPS Package File.csv") as packages:
                 if "delivered with" in p_notes:
                     p_notes = p_notes.replace("Must be delivered with", "Linked")
                     p_notes = p_notes.replace(", ", " ")
-                    print(p_notes)
         except IndexError:
             p_notes = "N/A"
             p_status = datetime.now().replace(hour=8, minute=0)
@@ -110,7 +109,6 @@ for i in range(len(p_list)):
     if "Linked" in notes:
         first_truck_list.append(package)
         notes_sub = notes.split(" ")
-        print(notes_sub)
         for j in range(len(notes_sub)):
             try:
                 if linked_packages.count(int(notes_sub[j])) == 0:
@@ -118,18 +116,21 @@ for i in range(len(p_list)):
             except Exception:
                 pass
         package_packed = True
-        
+
     if package_packed:
         p_list[i] = None
 
 
-print(linked_packages)
 p_list = list(filter(lambda x: x is not None, p_list))
-print(p_list)
 random.shuffle(p_list)
 for i in range(len(p_list)):
     package = p_list[i]
     for j in range(len(linked_packages)):
-        if package.getID() == int(linked_packages[j]):
+        if package.getID() == linked_packages[j]:
             first_truck_list.append(package)
+
+for i in range(len(second_truck_list)):
+    print(second_truck_list[i])
+
+print()
 
