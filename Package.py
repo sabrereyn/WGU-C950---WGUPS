@@ -42,10 +42,9 @@ class Package:
             Delivery due time that package is suppose to arrive at location by.
         weight : int
             Package's weight
-        status : Enum
-            Package delivery status, the choices being "at hub", "en route", or "delivered".
-        delivered_time : datetime
-            Time of package's delivery
+        status : Dictionary {Enum : Time Value}
+            Dictionary with Package statuses as keys and the time when reaching each statuses as values.
+
     """
 
     def __init__(self, package_id, address, city, state,
@@ -111,9 +110,6 @@ class Package:
         for k in self.status.items():
             self.status[PackageStatus(status)] = time
         return True
-
-    def setDeliveredTime(self, time):
-        self.delivered_time = time
 
 
 def SortByDeadline(hashtable):
