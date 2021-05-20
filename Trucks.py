@@ -37,7 +37,7 @@ class Truck:
         else:
             self.capacity -= 1
             package = packages
-            package.setStatus(2)
+            package.setStatus(2, self.truck_time)
             p_hashtable.update(package.getID(), package)
             self.truck_list.append(packages)
             return True
@@ -67,7 +67,7 @@ class Truck:
             if i == len(distance_list) - 1:
                 continue
             package = self.truck_list[i]
-            package.setStatus(3)
+            package.setStatus(3, self.truck_time)
             package.setDeliveredTime(t_time)
             package_hashtable.update(package.getID(), package)
             print(package)

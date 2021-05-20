@@ -47,6 +47,14 @@ with open("WGUPS Package File Modified.csv") as packages:
         p_state = str(package[3])
         p_zip = str(package[4])
         p_weight = int(package[6])
+        try:
+            if package[7]:
+                notes = str(package[7])
+                if "Delayed" in notes:
+                    p_status = datetime.now().replace(hour=9, minute=5)
+        except IndexError:
+            p_status = datetime.now().replace(hour=8, minute=0)
+            pass
 
         # Cast deadline into time objects. If deadlines are EOD, convert them into 8 PM
         # Else keep deadline times as they are
@@ -60,9 +68,10 @@ with open("WGUPS Package File Modified.csv") as packages:
             else:
                 p_deadline = datetime.now().replace(hour=int(time_list[0]), minute=int(time_list[1]))
 
-        notes = str(package[6])
+
+
         # package object
-        p = Package(p_id, p_address, p_city, p_state, p_zip, p_deadline, p_weight)
+        p = Package(p_id, p_address, p_city, p_state, p_zip, p_deadline, p_weight, p_status)
 
         # insert package object into package list
         p_list.append(p)

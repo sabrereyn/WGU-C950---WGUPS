@@ -49,7 +49,7 @@ class Package:
     """
 
     def __init__(self, package_id, address, city, state,
-                 zip_code, deadline, weight):
+                 zip_code, deadline, weight, time_at_status):
         """Init function for Package instances."""
         self.id = package_id
         self.address = address
@@ -58,18 +58,30 @@ class Package:
         self.zip_code = zip_code
         self.deadline = deadline
         self.weight = weight
-        self.status = PackageStatus(1)
-        self.delivered_time = None
+        self.status = {PackageStatus(1): time_at_status, PackageStatus(2): "N/A", PackageStatus(3): "N/A"}
+        # self.delivered_time = None
 
     def __str__(self):
         """Returns string when printing package object to console."""
-        if self.status == PackageStatus(3):
+        delivered = False
+        if self.status[PackageStatus(3)] != "N/A":
+            status = PackageStatus(3)
+            time_at_status = self.status.get(PackageStatus(3))
+            delivered = True
+        elif self.status[PackageStatus(2)] != "N/A":
+            status = PackageStatus(2)
+            time_at_status = self.status.get(PackageStatus(2))
+        else:
+            status = PackageStatus(1)
+            time_at_status = self.status.get(PackageStatus(1))
+
+        if delivered:
             return f"{self.id}, {self.address}, {self.city}, {self.state}, {self.zip_code}," \
-                   f" {self.deadline.time().strftime('%I:%M %p')}, {self.weight}, {self.status}" \
-                   f" at {self.delivered_time.time().strftime('%I:%M %p')}"
+                   f" {self.deadline.time().strftime('%I:%M %p')}, {self.weight}, {status}" \
+                   f" at {time_at_status.time().strftime('%I:%M %p')}"
         else:
             return f"{self.id}, {self.address}, {self.city}, {self.state}, {self.zip_code}," \
-                   f" {self.deadline.time().strftime('%I:%M %p')}, {self.weight}, {self.status}"
+                   f" {self.deadline.time().strftime('%I:%M %p')}, {self.weight}, {status}"
 
     def getID(self):
         return self.id
@@ -95,8 +107,9 @@ class Package:
     def getStatus(self):
         return self.status
 
-    def setStatus(self, status):
-        self.status = PackageStatus(status)
+    def setStatus(self, status, time):
+        for k in self.status.items():
+            self.status[PackageStatus(status)] = time
         return True
 
     def setDeliveredTime(self, time):
@@ -121,4 +134,3 @@ def GetPackageData(hashtable):
         for j in hashtable.table[i]:
             package = hashtable.search(j[0])
             print(package)
-
