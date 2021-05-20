@@ -5,19 +5,38 @@ from Graph import Graph
 from HashTable import ChainingHashTable
 from Package import Package
 
-"""Load package data from csv file and read rows into package object.
+with open("WGUPS Distance Table.csv") as distances:
+    distance_data = csv.reader(distances, delimiter=',')
+    header_line = next(distance_data)  # End points
+    distance_graph = Graph()
 
-Read package data from file and input them into a list. Length of list will
-be used for hashtable capacity calculation. Package's ID, address, city,
-state, zip code and deadline will be read into package object. Deadline is
-converted into a time object and packages with EOD deadlines will be converted
-into 8:00pm (self-declared 'End of Day' time).
-"""
+    # Iterate through rows
+    for row in distance_data:
+        start_point = row[0]
+        distance_graph.add_point(start_point)  # Add first element as starting point into graph
+
+        # Iterate through columns. If column is empty, continue on to next row.
+        # Else, get location of column and input into graph as end_point,
+        # Then get distance and input into graph as distance/weight.
+        for col in range(len(row))[1:]:
+            end_point = header_line[col]
+            distance_graph.add_point(end_point)
+            distance_graph.add_undirected_route(start_point, end_point, float(row[col]))  # Add route
 
 
 with open("WGUPS Package File Modified.csv") as packages:
+    """Load package data from csv file and read rows into package object.
+
+    Read package data from file and input them into a list. Length of list will
+    be used for hashtable capacity calculation. Package's ID, address, city,
+    state, zip code and deadline will be read into package object. Deadline is
+    converted into a time object and packages with EOD deadlines will be converted
+    into 8:00pm (self-declared 'End of Day' time).
+    """
     p_list = []
     time_format = '%I:%M %p'
+    first_truck_priority_list = []
+    second_truck_priority_list = []
 
     package_data = csv.reader(packages, delimiter=',')
     next(package_data)  # Skip header
@@ -41,6 +60,7 @@ with open("WGUPS Package File Modified.csv") as packages:
             else:
                 p_deadline = datetime.now().replace(hour=int(time_list[0]), minute=int(time_list[1]))
 
+        notes = str(package[6])
         # package object
         p = Package(p_id, p_address, p_city, p_state, p_zip, p_deadline, p_weight)
 
@@ -57,20 +77,3 @@ for i in range(len(p_list)):
 # Sort list by deadline
 # p_list.sort(key=lambda x: x.deadline)
 
-with open("WGUPS Distance Table.csv") as distances:
-    distance_data = csv.reader(distances, delimiter=',')
-    header_line = next(distance_data)  # End points
-    distance_graph = Graph()
-
-    # Iterate through rows
-    for row in distance_data:
-        start_point = row[0]
-        distance_graph.add_point(start_point)  # Add first element as starting point into graph
-
-        # Iterate through columns. If column is empty, continue on to next row.
-        # Else, get location of column and input into graph as end_point,
-        # Then get distance and input into graph as distance/weight.
-        for col in range(len(row))[1:]:
-            end_point = header_line[col]
-            distance_graph.add_point(end_point)
-            distance_graph.add_undirected_route(start_point, end_point, float(row[col]))  # Add route

@@ -21,12 +21,15 @@ class Truck:
             delivery_list.append(package_list[i])
 
         end_of_day = datetime.now().replace(hour=19, minute=0)
-        priority_list = list(filter(lambda x: x.deadline.time() < end_of_day.time(), delivery_list))
-        non_priority_list = list(filter(lambda x: x.deadline.time() == end_of_day.time(), delivery_list))
+        priority_list = list(filter(lambda x: x.deadline.time() <= end_of_day.time(), delivery_list))
+        non_priority_list = list(filter(lambda x: x.deadline.time() > end_of_day.time(), delivery_list))
 
         for i in range(len(priority_list)):
             if not self.LoadTruck(priority_list[i], package_hashtable) or i == len(priority_list) - 1:
                 self.Deliver_Package(package_hashtable)
+
+        for i in range(len(non_priority_list)):
+            print(non_priority_list[i])
 
     def LoadTruck(self, packages, p_hashtable):
         if self.capacity == 0:
@@ -52,14 +55,15 @@ class Truck:
 
         :param package_hashtable: hashtable of packages for updating package's status
         """
-        # print(self.truck_time)
-        distance_list, self.truck_list = Find_Shortest_Distance(self.current_location, self.truck_list)
+        distance_list, self.truck_list = Find_Shortest_Distance(self.current_location, self.truck_list, self.truck_time)
         for i in range(len(distance_list)):
             self.mileage += distance_list[i]
             # Find time with formula: time = 60 * (distance/speed)
             travel_time = round(60 * (float(distance_list[i] / self.SPEED)))
             t_time = datetime.combine(date.today(), self.truck_time.time()) + timedelta(minutes=travel_time)
             self.truck_time = t_time
+
+            # Last element in distance_list has the distance back to hub, so ignore the package portion of loop
             if i == len(distance_list) - 1:
                 continue
             package = self.truck_list[i]

@@ -1,12 +1,13 @@
 import sys
+from datetime import datetime
 
 from CSV import distance_graph
 
 
-def Find_Shortest_Distance(start, truck_list):
+def Find_Shortest_Distance(start, truck_list, truck_time):
     """ Sorting method that uses the Greedy algorithm approach.
 
-    To summarize in one sentence: this approach basically iterates through the list provided to find
+    To summarize in one sentence: this approach iterates through the list provided to find
     the shortest distance from current location to a package's address. This is done through two for loops, the first
     one to indicate where we should start looking for the shortest distance from, and the second one
     to actually look through the list and compare distances until the minimal one is found in comparison
@@ -28,12 +29,18 @@ def Find_Shortest_Distance(start, truck_list):
     distance_list = []
     current_location = start
     next_delivery = None
+    end_of_day = datetime.now().replace(hour=19, minute=0)
+    # NEED TO FIND WAY TO SORT PRIORITY PACKAGES FIRST, THEN SORT NON-PRIORITY AND PUT PACKAGES WITH SIMILAR
+    # ADDRESS TOGETHER!
     for i in range(len(truck_list)):
         min_distance = sys.maxsize
+
         for j in range(len(truck_list))[i:]:
             package = truck_list[j]
+            deadline = package.getDeadline()
             package_address = package.getAddress()
             distance = distance_graph.search(current_location, package_address)
+
             if distance[0] < min_distance:
                 min_distance = distance[0]
                 next_delivery = package
@@ -42,10 +49,13 @@ def Find_Shortest_Distance(start, truck_list):
                 truck_list[j] = temp
         current_location = next_delivery.getAddress()
         distance_list.append(min_distance)
+
         if i == len(truck_list) - 1:
             to_hub = distance_graph.search(current_location, hub)
             distance_list.append(to_hub[0])
     return distance_list, truck_list
+
+# def Filter_For_Urgent_Packages(p_list):
 
 
 def Time_Formula(distance):
