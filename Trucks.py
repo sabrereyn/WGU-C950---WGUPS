@@ -68,7 +68,6 @@ class Truck:
                 continue
             package = self.truck_list[i]
             package.setStatus(3, self.truck_time)
-            package.setDeliveredTime(t_time)
             package_hashtable.update(package.getID(), package)
             print(package)
         print(f'Mileage: {self.mileage}')
