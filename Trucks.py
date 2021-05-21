@@ -4,14 +4,14 @@ from datetime import timedelta, datetime, date
 
 
 class Truck:
-    def __init__(self):
+    def __init__(self, id):
+        self.id = id
         self.SPEED = 18
         self.capacity = 16
         self.truck_list = []
         self.truck_time = datetime.now()
         self.current_location = '4001 South 700 East'
         self.mileage = 0
-        self.leave_time = None
 
     def setTime(self, h, m):
         self.truck_time = self.truck_time.replace(hour=h, minute=m)
