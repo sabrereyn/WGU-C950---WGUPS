@@ -77,11 +77,10 @@ class Package:
         if delivered:
             return f"{self.id}, {self.address}, {self.city}, {self.state}, {self.zip_code}," \
                    f" {self.deadline.time().strftime('%I:%M %p')}, {self.weight}, {status}" \
-                   f" at {time_at_status.time().strftime('%I:%M %p')}, {self.notes}"
+                   f" at {time_at_status.time().strftime('%I:%M %p')}"
         else:
             return f"{self.id}, {self.address}, {self.city}, {self.state}, {self.zip_code}," \
-                   f" {self.deadline.time().strftime('%I:%M %p')}, {self.weight}, {status}" \
-                   f"{self.notes}"
+                   f" {self.deadline.time().strftime('%I:%M %p')}, {self.weight}, {status}"
 
     def getID(self):
         return self.id

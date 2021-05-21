@@ -29,7 +29,6 @@ def Find_Shortest_Distance(start, truck_list):
     distance_list = []
     current_location = start
     next_delivery = None
-    end_of_day = datetime.now().replace(hour=19, minute=0)
     # CREATE TWO LIST: ONE WITH NON-EOD DEADLINE AND ONE WITH EOD DEADLINE. THEN TOSS OUT ORIGINAL LIST.
     # SORT URGENT PACKAGES. CREATE A NEW LIST. WHILE ITERATING THROUGH URGENT PACKAGES, INSERT INTO NEW LIST
     # AND ITERATE THROUGH NON-URGENT FOR PACKAGES WITH SAME ADDRESSES. WHEN URGENT PACKAGES ARE DONE, THEN
@@ -39,6 +38,7 @@ def Find_Shortest_Distance(start, truck_list):
 
         for j in range(len(truck_list))[i:]:
             package = truck_list[j]
+            print(package)
             package_address = package.getAddress()
             distance = distance_graph.search(current_location, package_address)
 

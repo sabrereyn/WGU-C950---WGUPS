@@ -120,14 +120,28 @@ for i in range(len(p_list)):
     if package_packed:
         p_list[i] = None
 
+for i in range(len(p_list)):
+    if p_list[i] is not None:
+        package = p_list[i]
+        for j in range(len(linked_packages)):
+            if package.getID() == linked_packages[j]:
+                first_truck_list.append(package)
+                p_list[i] = None
 
 p_list = list(filter(lambda x: x is not None, p_list))
-random.shuffle(p_list)
-for i in range(len(p_list)):
-    package = p_list[i]
-    for j in range(len(linked_packages)):
-        if package.getID() == linked_packages[j]:
-            first_truck_list.append(package)
+
+# random.shuffle(p_list)
+half = len(p_list)//2
+first_half = p_list[:half]
+# second_half = p_list[half:]
+
+for i in range(len(first_half)):
+    first_truck_list.append(first_half[i])
+    # print(first_half[i])
+
+print()
+#for i in range(len(second_half)):
+    #second_truck_list.append(second_half[i])
 
 for i in range(len(second_truck_list)):
     print(second_truck_list[i])
