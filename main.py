@@ -6,9 +6,9 @@ from Trucks import Truck
 
 
 class Main:
-    first_truck = Truck()  # Priority Truck
+    first_truck = Truck(1)  # Priority Truck
     first_truck.setTime(8, 0)
-    second_truck = Truck()  # Delayed and EOD packages
+    second_truck = Truck(2)  # Delayed and EOD packages
     second_truck.setTime(9, 5)
     print("Loading packages for first truck now")
     print()

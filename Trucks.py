@@ -9,6 +9,7 @@ class Truck:
         self.SPEED = 18
         self.capacity = 16
         self.truck_list = []
+        self.priority_list = []
         self.truck_time = datetime.now()
         self.current_location = '4001 South 700 East'
         self.mileage = 0
@@ -18,26 +19,30 @@ class Truck:
 
     def LoadPackageList(self, package_list):
         for i in range(len(package_list)):
-            self.truck_list.append(package_list[i])
+            self.priority_list.append(package_list[i])
 
     def RemovePackage(self, package):
-        for i in range(len(self.truck_list)):
-            p = self.truck_list[i]
+        for i in range(len(self.priority_list)):
+            p = self.priority_list[i]
             if p.getID() == package.getID():
-                self.truck_list.remove(p)
+                self.priority_list.remove(p)
                 return True
 
     def LoadTruckAgenda(self):
         delivery_list = []
         can_deliver = False
-
+        """
         end_of_day = datetime.now().replace(hour=19, minute=0)
-        priority_list = list(filter(lambda x: x.deadline.time() <= end_of_day.time(), self.truck_list))
+        if self.id == 1:
+            self.priority_list = list(filter(lambda x: x.deadline.time() <= end_of_day.time(), self.truck_list))
+        if self.id == 2:
+            self.priority_list = list(filter(lambda x: x.notes != "N/A", self.truck_list))
+            
         non_priority_list = list(filter(lambda x: x.deadline.time() > end_of_day.time(), self.truck_list))
         while not can_deliver:
-            if priority_list:
-                for i in range(len(priority_list)):
-                    if not self.LoadTruck(priority_list[i], delivery_list):
+            if self.priority_list:
+                for i in range(len(self.priority_list)):
+                    if not self.LoadTruck(self.priority_list[i], delivery_list):
                         can_deliver = True
             if non_priority_list:
                 for i in range(len(non_priority_list)):
@@ -46,7 +51,9 @@ class Truck:
                     elif i == len(non_priority_list) - 1:
                         if self.LoadTruck(non_priority_list[i], delivery_list):
                             can_deliver = True
-        self.Deliver_Package(delivery_list)
+        """
+
+        self.Deliver_Package()
 
     def LoadTruck(self, packages, delivery_list):
         if self.capacity == 0:
@@ -59,7 +66,7 @@ class Truck:
             delivery_list.append(packages)
             return True
 
-    def Deliver_Package(self, delivery_list):
+    def Deliver_Package(self):
         """Deliver packages in truck's list
 
         Call greedy algorithm to find packages with the shortest distance to
@@ -67,7 +74,7 @@ class Truck:
         delete package from truck's list and move on to next package.
 
         """
-        distance_list, delivered_list = Find_Shortest_Distance(self.current_location, delivery_list)
+        distance_list, delivered_list, self.capacity = Find_Shortest_Distance(self.current_location, self.priority_list, self.capacity, self.truck_time)
         for i in range(len(distance_list)):
             self.mileage += distance_list[i]
             # Find time with formula: time = 60 * (distance/speed)
