@@ -133,15 +133,15 @@ p_list = list(filter(lambda x: x is not None, p_list))
 # random.shuffle(p_list)
 half = len(p_list)//2
 first_half = p_list[:half]
-# second_half = p_list[half:]
+second_half = p_list[half:]
 
 for i in range(len(first_half)):
     first_truck_list.append(first_half[i])
     # print(first_half[i])
 
 print()
-#for i in range(len(second_half)):
-    #second_truck_list.append(second_half[i])
+for i in range(len(second_half)):
+    second_truck_list.append(second_half[i])
 
 print("Printing List for First Truck")
 for i in range(len(first_truck_list)):

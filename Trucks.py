@@ -83,12 +83,8 @@ class Truck:
             package_hashtable.update(package.getID(), package)
             print(package)
             self.RemovePackage(package)
-        self.capacity = 16
+            self.capacity += 1
         print(f'Mileage: {self.mileage}')
-        print()
-        print("Printing packages left in truck list")
-        for i in range(len(self.truck_list)):
-            print(self.truck_list[i])
         print()
         if self.truck_list:
             print("Let's deliver more!")

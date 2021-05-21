@@ -15,6 +15,10 @@ class Main:
     first_truck.LoadPackageList(first_truck_list)
     first_truck.LoadTruckAgenda()
     print()
+    print("Loading package for second truck now")
+    print()
+    second_truck.LoadPackageList(second_truck_list)
+    second_truck.LoadTruckAgenda()
     # second_truck.LoadPackageList(second_truck_list)
     # second_truck.LoadTruckAgenda()
 
