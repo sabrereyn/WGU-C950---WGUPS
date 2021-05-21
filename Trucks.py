@@ -20,24 +20,33 @@ class Truck:
         for i in range(len(package_list)):
             self.truck_list.append(package_list[i])
 
+    def RemovePackage(self, package):
+        for i in range(len(self.truck_list)):
+            p = self.truck_list[i]
+            if p.getID() == package.getID():
+                self.truck_list.remove(p)
+                return True
+
     def LoadTruckAgenda(self):
         delivery_list = []
+        can_deliver = False
 
         end_of_day = datetime.now().replace(hour=19, minute=0)
-
-        if self.truck_list:
-            priority_list = list(filter(lambda x: x.deadline.time() <= end_of_day.time(), self.truck_list))
-            non_priority_list = list(filter(lambda x: x.deadline.time() > end_of_day.time(), self.truck_list))
+        priority_list = list(filter(lambda x: x.deadline.time() <= end_of_day.time(), self.truck_list))
+        non_priority_list = list(filter(lambda x: x.deadline.time() > end_of_day.time(), self.truck_list))
+        while not can_deliver:
             if priority_list:
                 for i in range(len(priority_list)):
                     if not self.LoadTruck(priority_list[i], delivery_list):
-                        self.Deliver_Package(delivery_list)
+                        can_deliver = True
             if non_priority_list:
                 for i in range(len(non_priority_list)):
-                    if not self.LoadTruck(non_priority_list[i], delivery_list) or i == len(non_priority_list) - 1:
-                        self.Deliver_Package(delivery_list)
-        else:
-            print("Delivered all packages!")
+                    if not self.LoadTruck(non_priority_list[i], delivery_list):
+                        can_deliver = True
+                    elif i == len(non_priority_list) - 1:
+                        if self.LoadTruck(non_priority_list[i], delivery_list):
+                            can_deliver = True
+        self.Deliver_Package(delivery_list)
 
     def LoadTruck(self, packages, delivery_list):
         if self.capacity == 0:
@@ -48,12 +57,7 @@ class Truck:
             package.setStatus(2, self.truck_time)
             package_hashtable.update(package.getID(), package)
             delivery_list.append(packages)
-            self.truck_list.remove(packages)
             return True
-
-    def printTruckSelf(self):
-        for i in range(len(self.truck_list)):
-            print(self.truck_list[i])
 
     def Deliver_Package(self, delivery_list):
         """Deliver packages in truck's list
@@ -77,13 +81,19 @@ class Truck:
             package = delivered_list[i]
             package.setStatus(3, self.truck_time)
             package_hashtable.update(package.getID(), package)
-            # print(package)
+            print(package)
+            self.RemovePackage(package)
         self.capacity = 16
         print(f'Mileage: {self.mileage}')
-        self.LoadTruckAgenda()
+        print()
+        print("Printing packages left in truck list")
+        for i in range(len(self.truck_list)):
+            print(self.truck_list[i])
+        print()
+        if self.truck_list:
+            print("Let's deliver more!")
+            print()
+            self.LoadTruckAgenda()
 
 
-first_truck = Truck()  # Priority Truck
-first_truck.setTime(8, 0)
-second_truck = Truck()  # Delayed and EOD packages
-second_truck.setTime(9, 5)
+

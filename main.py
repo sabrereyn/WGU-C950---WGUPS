@@ -2,10 +2,16 @@
 import Package
 import CSV
 from CSV import package_hashtable, first_truck_list, second_truck_list
-from Trucks import first_truck, second_truck
+from Trucks import Truck
 
 
 class Main:
+    first_truck = Truck()  # Priority Truck
+    first_truck.setTime(8, 0)
+    second_truck = Truck()  # Delayed and EOD packages
+    second_truck.setTime(9, 5)
+    print("Loading packages for first truck now")
+    print()
     first_truck.LoadPackageList(first_truck_list)
     first_truck.LoadTruckAgenda()
     print()

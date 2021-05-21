@@ -38,7 +38,6 @@ def Find_Shortest_Distance(start, truck_list):
 
         for j in range(len(truck_list))[i:]:
             package = truck_list[j]
-            print(package)
             package_address = package.getAddress()
             distance = distance_graph.search(current_location, package_address)
 

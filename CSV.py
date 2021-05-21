@@ -49,7 +49,7 @@ with open("WGUPS Package File.csv") as packages:
 
         # Check to see if there are notes. If there are, check to see if the word 'Delayed'
         # If delayed, reflect the status time of the package to 9:05 AM (the time it'll arrive at the hub).
-        # Else change it to 8:00 AM.
+        # Else change it to 7:00 AM.
         try:
             if package[7]:
                 p_notes = str(package[7])
@@ -60,7 +60,7 @@ with open("WGUPS Package File.csv") as packages:
                     p_notes = p_notes.replace(", ", " ")
         except IndexError:
             p_notes = "N/A"
-            p_status = datetime.now().replace(hour=8, minute=0)
+            p_status = datetime.now().replace(hour=7, minute=0)
             pass
 
         # Cast deadline into time objects. If deadlines are EOD, convert them into 8 PM
@@ -143,8 +143,9 @@ print()
 #for i in range(len(second_half)):
     #second_truck_list.append(second_half[i])
 
-for i in range(len(second_truck_list)):
-    print(second_truck_list[i])
+print("Printing List for First Truck")
+for i in range(len(first_truck_list)):
+    print(first_truck_list[i])
 
 print()
 
