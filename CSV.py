@@ -75,6 +75,11 @@ with open("WGUPS Package File.csv") as packages:
             else:
                 p_deadline = datetime.now().replace(hour=int(time_list[0]), minute=int(time_list[1]))
 
+        if p_id == 9:
+            p_address = "410 S State St"
+            p_city = "Salt Lake City"
+            p_state = "UT"
+            p_zip = "84111"
         # package object
         p = Package(p_id, p_address, p_city, p_state, p_zip, p_deadline, p_weight, p_status, p_notes)
 
@@ -83,69 +88,3 @@ with open("WGUPS Package File.csv") as packages:
 
 # Create hash table using length of package list for initial_capacity computation
 package_hashtable = ChainingHashTable(len(p_list))
-first_truck_list = []
-second_truck_list = []
-linked_packages = []
-end_of_day = datetime.now().replace(hour=19, minute=0)
-
-# Iterate through package list and insert elements into hash table using package's id as key
-for i in range(len(p_list)):
-    package = p_list[i]
-    package_packed = False
-    package_hashtable.insert(package.getID(), package)
-    notes = package.getNotes()
-    delivery_time = package.getDeadline()
-
-    if "N/A" in notes:
-        if delivery_time.time() <= end_of_day.time():
-            first_truck_list.append(package)
-            package_packed = True
-    if "Delayed" in notes:
-        second_truck_list.append(package)
-        package_packed = True
-    if "truck 2" in notes:
-        second_truck_list.append(package)
-        package_packed = True
-    if "Linked" in notes:
-        first_truck_list.append(package)
-        notes_sub = notes.split(" ")
-        for j in range(len(notes_sub)):
-            try:
-                if linked_packages.count(int(notes_sub[j])) == 0:
-                    linked_packages.append(int(notes_sub[j]))
-            except Exception:
-                pass
-        package_packed = True
-
-    if package_packed:
-        p_list[i] = None
-
-for i in range(len(p_list)):
-    if p_list[i] is not None:
-        package = p_list[i]
-        for j in range(len(linked_packages)):
-            if package.getID() == linked_packages[j]:
-                first_truck_list.append(package)
-                p_list[i] = None
-
-p_list = list(filter(lambda x: x is not None, p_list))
-
-# random.shuffle(p_list)
-# half = len(p_list)//2
-# first_half = p_list[:half]
-# second_half = p_list[half:]
-
-# for i in range(len(first_half)):
-    # first_truck_list.append(first_half[i])
-    # print(first_half[i])
-
-# print()
-# for i in range(len(second_half)):
-    # second_truck_list.append(second_half[i])
-
-# print("Printing List for First Truck")
-# for i in range(len(first_truck_list)):
-    # print(first_truck_list[i])
-
-print()
-

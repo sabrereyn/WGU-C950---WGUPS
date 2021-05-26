@@ -85,6 +85,9 @@ class Package:
     def getID(self):
         return self.id
 
+    def setAddress(self, address):
+        self.address = address
+
     def getAddress(self):
         return self.address
 

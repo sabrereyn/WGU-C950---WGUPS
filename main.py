@@ -1,24 +1,20 @@
 # Name: Sabre Reyn Nakaahiki | Student ID: 001208343
 import Package
 import CSV
-from CSV import package_hashtable, first_truck_list, second_truck_list
-from Trucks import Truck
-
+import Trucks
 
 class Main:
-    first_truck = Truck(1)  # Priority Truck
-    first_truck.setTime(8, 0)
-    second_truck = Truck(2)  # Delayed and EOD packages
-    second_truck.setTime(9, 5)
+    non_urgent_list = CSV.p_list
+
     print("Loading packages for first truck now")
     print()
-    first_truck.LoadPackageList(first_truck_list)
-    first_truck.LoadTruckAgenda()
+    # first_truck.LoadPriorityList(first_truck_list)
+    # first_truck.LoadTruckAgenda()
     print()
     print("Loading package for second truck now")
     print()
-    second_truck.LoadPackageList(second_truck_list)
-    second_truck.LoadTruckAgenda()
+    # second_truck.LoadPriorityList(second_truck_list)
+    # second_truck.LoadTruckAgenda()
     # second_truck.LoadPackageList(second_truck_list)
     # second_truck.LoadTruckAgenda()
 

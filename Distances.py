@@ -1,11 +1,12 @@
 import sys
 from datetime import datetime
 
-from CSV import distance_graph, p_list, package_hashtable
+from CSV import distance_graph, package_hashtable
 
 
-def Find_Shortest_Distance(start, priority_list, capacity, time):
-    """ Sorting method that uses the Greedy algorithm approach.
+# general_list = p_list
+def Find_Shortest_Distance(start, package_list):
+    """Sorting method that uses the Greedy algorithm approach.
 
     To summarize in one sentence: this approach iterates through the list provided to find
     the shortest distance from current location to a package's address. This is done through two for loops, the first
@@ -21,95 +22,60 @@ def Find_Shortest_Distance(start, priority_list, capacity, time):
     The start of the second loop will always move forward with the first loop,
     never touching the previously sorted packages.
 
-    :param start: location the truck is located at already
-    :param truck_list: the list of packages in the truck
-    :return: list of distances, sorted truck_list
-    """
+    :param package_list: the list of packages in the truck
+    :param start: location the truck is located at currently
+    :return: list of distances, sorted package_list"""
+
     hub = "4001 South 700 East"
     optimized_list = []
     distance_list = []
     current_location = start
+
     next_delivery = None
-    # CREATE TWO LIST: ONE WITH NON-EOD DEADLINE AND ONE WITH EOD DEADLINE. THEN TOSS OUT ORIGINAL LIST.
-    # SORT URGENT PACKAGES. CREATE A NEW LIST. WHILE ITERATING THROUGH URGENT PACKAGES, INSERT INTO NEW LIST
-    # AND ITERATE THROUGH NON-URGENT FOR PACKAGES WITH SAME ADDRESSES. WHEN URGENT PACKAGES ARE DONE, THEN
-    # SORT THROUGH REST OF NON URGENT PACKAGES FOR SHORTEST DISTANCES.
-    if priority_list:
-        priority_list = sorted(priority_list, key=lambda x: x.deadline)
-        for i in range(len(priority_list)):
-            priority = priority_list[i]
-            optimized_list.append(priority)
-            UpdatePackage(time, priority)
-            capacity += 1
-
-            if i == 0:
-                distance = distance_graph.search(current_location, priority.getAddress())
-                distance_list.append(distance[0])
-            while capacity < 16 - len(priority_list):
-                for j in range(len(p_list)):
-                    package = p_list[j]
-                    if package.getAddress() == priority.getAddress():
-                        optimized_list.append(package)
-                        p_list.remove(package)
-                        UpdatePackage(time, package)
-                        capacity += 1
-        current_location, distance_list = CheckDistance(current_location, optimized_list)
-
-    if capacity <= 16:
-        for i in range(len(p_list)):
-            min_distance = sys.maxsize
-            package = None
-
-            for j in range(len(p_list))[i:]:
-                package = p_list[j]
-                package_address = package.getAddress()
-                distance = distance_graph.search(current_location, package_address)
-
-                if distance[0] < min_distance:
-                    min_distance = distance[0]
-                    next_delivery = package
-            current_location = next_delivery.getAddress()
-            distance_list.append(min_distance)
-            optimized_list.append(package)
-            UpdatePackage(time, package)
-            capacity += 1
-
-    to_hub = distance_graph.search(current_location, hub)
-    distance_list.append(to_hub[0])
-
-    """
-    for i in range(1, len(optimized_list), 2):
-        first_package = optimized_list[i]
-        second_package = optimized_list[i + 1]
-        distance = distance_graph.search(first_package.getAddress(), second_package.getAddress())
-        distance_list.append(distance[0])
-
-        if i == len(truck_list) - 1:
-            to_hub = distance_graph.search(current_location, hub)
-            distance_list.append(to_hub[0])
-
-    for i in range(len(truck_list)):
+    for i in range(len(package_list)):
         min_distance = sys.maxsize
-
-        for j in range(len(truck_list))[i:]:
-            package = truck_list[j]
+        for j in range(len(package_list))[i:]:
+            package = package_list[j]
             package_address = package.getAddress()
             distance = distance_graph.search(current_location, package_address)
 
             if distance[0] < min_distance:
                 min_distance = distance[0]
                 next_delivery = package
-                temp = truck_list[i]
-                truck_list[i] = next_delivery
-                truck_list[j] = temp
+                temp = package_list[i]
+                package_list[i] = next_delivery
+                package_list[j] = temp
+        optimized_list.append(next_delivery)
         current_location = next_delivery.getAddress()
         distance_list.append(min_distance)
 
-        if i == len(truck_list) - 1:
-            to_hub = distance_graph.search(current_location, hub)
-            distance_list.append(to_hub[0])
-    """
-    return distance_list, optimized_list, capacity
+    to_hub = distance_graph.search(current_location, hub)
+    distance_list.append(to_hub[0])
+
+    return optimized_list, distance_list
+
+
+def Sort_By_Distance(package_list):
+    print("Sorting by shortest distance")
+    next_delivery = None
+    current_location = "4001 South 700 East"
+
+    for i in range(len(package_list)):
+        min_distance = sys.maxsize
+        for j in range(len(package_list))[i:]:
+            package = package_list[j]
+            package_address = package.getAddress()
+            distance = distance_graph.search(current_location, package_address)
+
+            if distance[0] < min_distance:
+                min_distance = distance[0]
+                next_delivery = package
+                temp = package_list[i]
+                package_list[i] = next_delivery
+                package_list[j] = temp
+        current_location = next_delivery.getAddress()
+
+    return package_list
 
 
 def UpdatePackage(time, package):
