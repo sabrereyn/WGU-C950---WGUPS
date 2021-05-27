@@ -66,14 +66,14 @@ with open("WGUPS Package File.csv") as packages:
         # Cast deadline into time objects. If deadlines are EOD, convert them into 8 PM
         # Else keep deadline times as they are
         if str(package[5]) == 'EOD':
-            p_deadline = datetime.now().replace(hour=20, minute=0)
+            p_deadline = datetime.now().replace(hour=20, minute=0, second=0)
         else:
             str_time = package[5].replace(' ', ':')
             time_list = str_time.split(':')
             if "PM" in package[5]:
-                p_deadline = datetime.now().replace(hour=int(time_list[0]) + 12, minute=int(time_list[1]))
+                p_deadline = datetime.now().replace(hour=int(time_list[0]) + 12, minute=int(time_list[1]), second=0)
             else:
-                p_deadline = datetime.now().replace(hour=int(time_list[0]), minute=int(time_list[1]))
+                p_deadline = datetime.now().replace(hour=int(time_list[0]), minute=int(time_list[1]), second=0)
 
         if p_id == 9:
             p_address = "410 S State St"

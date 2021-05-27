@@ -21,6 +21,9 @@ class Truck:
     def getTime(self):
         return self.truck_time.time()
 
+    def getMileage(self):
+        return self.mileage
+
     def LoadPackageList(self, package_list):
         self.package_list = package_list
 

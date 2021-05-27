@@ -61,7 +61,7 @@ class Package:
         self.notes = notes
 
     def __str__(self):
-        """Returns string when printing package object to console."""
+        """Returns string when printing package object to console.
         delivered = False
         if self.status[PackageStatus(3)] != "N/A":
             status = PackageStatus(3)
@@ -81,6 +81,9 @@ class Package:
         else:
             return f"{self.id}, {self.address}, {self.city}, {self.state}, {self.zip_code}," \
                    f" {self.deadline.time().strftime('%I:%M %p')}, {self.weight}, {status}"
+        """
+        return f"ID: {self.id}\tAddress: {self.address}, {self.city}, {self.state} {self.zip_code}\t" \
+               f"Deadline: {self.deadline.time().strftime('%I:%M %p')}\tWeight: {self.weight}"
 
     def getID(self):
         return self.id
@@ -106,12 +109,15 @@ class Package:
     def getWeight(self):
         return self.weight
 
-    def getStatus(self):
+    def getStatus(self, status):
         return self.status
 
+    def getTimeAtStatus(self, status):
+        return self.status.get(PackageStatus(status))
+
     def setStatus(self, status, time):
-        for k in self.status.items():
-            self.status[PackageStatus(status)] = time
+        # for k in self.status.items():
+        self.status[PackageStatus(status)] = time
         return True
 
     def getNotes(self):
