@@ -2,8 +2,6 @@
 from datetime import datetime
 from enum import Enum
 
-"""Enumerate package's status"""
-
 
 class PackageStatus(Enum):
     """Enumerate package's status"""
@@ -13,7 +11,7 @@ class PackageStatus(Enum):
     DELIVERED = 3
 
     def __str__(self):
-        """When calling the package status, print string value of enums's name
+        """When calling the package status, print string value of enums name
 
         :return: string value of enum's name
         """
@@ -61,27 +59,6 @@ class Package:
         self.notes = notes
 
     def __str__(self):
-        """Returns string when printing package object to console.
-        delivered = False
-        if self.status[PackageStatus(3)] != "N/A":
-            status = PackageStatus(3)
-            time_at_status = self.status.get(PackageStatus(3))
-            delivered = True
-        elif self.status[PackageStatus(2)] != "N/A":
-            status = PackageStatus(2)
-            time_at_status = self.status.get(PackageStatus(2))
-        else:
-            status = PackageStatus(1)
-            time_at_status = self.status.get(PackageStatus(1))
-
-        if delivered:
-            return f"{self.id}, {self.address}, {self.city}, {self.state}, {self.zip_code}," \
-                   f" {self.deadline.time().strftime('%I:%M %p')}, {self.weight}, {status}" \
-                   f" at {time_at_status.time().strftime('%I:%M %p')}"
-        else:
-            return f"{self.id}, {self.address}, {self.city}, {self.state}, {self.zip_code}," \
-                   f" {self.deadline.time().strftime('%I:%M %p')}, {self.weight}, {status}"
-        """
         return f"ID: {self.id}\tAddress: {self.address}, {self.city}, {self.state} {self.zip_code}\t" \
                f"Deadline: {self.deadline.time().strftime('%I:%M %p')}\tWeight: {self.weight}"
 
@@ -94,36 +71,20 @@ class Package:
     def getAddress(self):
         return self.address
 
-    def getCity(self):
-        return self.city
-
-    def getState(self):
-        return self.state
-
-    def getZip(self):
-        return self.zip_code
-
-    def getDeadline(self):
-        return self.deadline
-
-    def getWeight(self):
-        return self.weight
-
-    def getStatus(self, status):
+    def getStatus(self):
         return self.status
 
     def getTimeAtStatus(self, status):
         return self.status.get(PackageStatus(status))
 
     def setStatus(self, status, time):
-        # for k in self.status.items():
         self.status[PackageStatus(status)] = time
         return True
 
     def getNotes(self):
         return self.notes
 
-
+"""
 def SortByDeadline(hashtable):
     sort_list = []
     for i in range(len(hashtable.table)):
@@ -134,11 +95,4 @@ def SortByDeadline(hashtable):
     sort_list = sorted(sort_list, key=lambda x: datetime.strptime(x.deadline, '%I:%M %p'))
     for i in range(len(sort_list)):
         print(sort_list[i])
-
-
-def GetPackageData(hashtable):
-    # Fetch packages from hash table
-    for i in range(len(hashtable.table)):
-        for j in hashtable.table[i]:
-            package = hashtable.search(j[0])
-            print(package)
+"""
