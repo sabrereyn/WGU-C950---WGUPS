@@ -25,7 +25,10 @@ class Truck:
         return self.mileage
 
     def LoadPackageList(self, package_list):
-        self.package_list = package_list
+        for i in range(len(package_list)):
+            p = package_list[i]
+            p.setStatus(2, self.truck_time)
+            self.package_list.append(p)
 
     def LoadTruckList(self, package_list):
         for i in range(len(package_list)):
@@ -68,6 +71,7 @@ class Truck:
             self.mileage += distance_list[i]
             # Find time with formula: time = 60 * (distance/speed)
             travel_time = round(60 * (float(distance_list[i] / self.SPEED)))
+            # Update truck's time
             t_time = datetime.combine(date.today(), self.truck_time.time()) + timedelta(minutes=travel_time)
             self.truck_time = t_time
 
@@ -75,6 +79,7 @@ class Truck:
             if i == len(distance_list) - 1:
                 continue
             package = delivery_list[i]
+            self.package_list.remove(package)
             package.setStatus(3, self.truck_time)
             package_hashtable.update(package.getID(), package)
             print(package)
