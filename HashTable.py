@@ -1,8 +1,13 @@
+# Hashtables have a space complexity of O(n)
 class ChainingHashTable:
-    # Constructor, takes in parameter of length of list
-    # Then pass the length to LargestPrimeFactor function for hash table's capacity
-    # Then assigns all buckets with empty list.
     def __init__(self, list_length):
+        """ Constructor
+
+        Passes passed in parameter to LargestPrimeFactor function for hash table's capacity
+        Then assigns all buckets with empty list.
+
+        :param list_length: length of a list
+        """
         self.table = []
         initial_capacity = int(LargestPrimeFactor(list_length))
         for i in range(initial_capacity):
@@ -13,8 +18,16 @@ class ChainingHashTable:
         bucket_list = self.table[bucket]
         return bucket_list
 
-    # Insert package into the hash table
     def insert(self, key, package):
+        """ Insert package into the hash table.
+
+        Time complexity of O(1)
+
+        :param key: Key to find specific value
+        :param package: Value
+        :return: true when value is inserted
+        """
+
         # Get bucket list
         bucket_list = self.Get_Bucket_List(key)
 
@@ -24,8 +37,17 @@ class ChainingHashTable:
         return True
 
     def update(self, key, value):
-        # update key if it is already in the bucket
-        bucket_list = self.Get_Bucket_List(key)
+        """ Update value in hashtable.
+
+        Time complexity of O(1)
+
+        :param key: Key to find specific value
+        :param value: Value
+        :return: true when value is updated
+        """
+        bucket_list = self.Get_Bucket_List(key)  # get the bucket list where this key would be.
+
+        # Search for key in the bucket list
         for key_value in bucket_list:
             if key_value[0] == key:
                 key_value[1] = value
@@ -33,12 +55,18 @@ class ChainingHashTable:
 
     # Searches for an item with matching
     def search(self, key):
-        # get the bucket list where this key would be.
-        bucket_list = self.Get_Bucket_List(key)
+        """ Searches for a value with matching key
+
+        Time complexity of O(1)
+
+        :param key: The key to find a specific value with
+        :return: None if value couldn't be found or the value itself
+        """
+
+        bucket_list = self.Get_Bucket_List(key)  # get the bucket list where this key would be.
 
         # search for the key in the bucket list
         for key_value in bucket_list:
-            # print (key_value)
             if key_value[0] == key:
                 return key_value[1]  # value
         return None

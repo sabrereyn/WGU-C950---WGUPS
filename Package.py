@@ -71,6 +71,9 @@ class Package:
     def getAddress(self):
         return self.address
 
+    def getDeadline(self):
+        return self.deadline
+
     def getStatus(self):
         return self.status
 

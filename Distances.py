@@ -1,7 +1,6 @@
 import sys
-from datetime import datetime
 
-from CSV import distance_graph, package_hashtable
+from CSV import distance_graph
 
 
 # general_list = p_list
@@ -30,8 +29,10 @@ def Find_Shortest_Distance(start, package_list):
     optimized_list = []
     distance_list = []
     current_location = start
-
     next_delivery = None
+
+    # Time-complexity of O(n^2)
+    # Space-complexity of O(1)
     for i in range(len(package_list)):
         min_distance = sys.maxsize
         for j in range(len(package_list))[i:]:
@@ -56,10 +57,20 @@ def Find_Shortest_Distance(start, package_list):
 
 
 def Sort_By_Distance(package_list):
+    """ Greedy algorithm.
+
+    This returns the package list sorted by distance, without returning the distance list like the
+    main algorithm function above does.
+
+    :param package_list: package list to sort.
+    :return: the package list sorted by distance.
+    """
     print("Sorting by shortest distance")
     next_delivery = None
     current_location = "4001 South 700 East"
 
+    # Time-complexity of O(n^2)
+    # Space-complexity of O(1)
     for i in range(len(package_list)):
         min_distance = sys.maxsize
         for j in range(len(package_list))[i:]:
@@ -76,19 +87,3 @@ def Sort_By_Distance(package_list):
         current_location = next_delivery.getAddress()
 
     return package_list
-
-
-def UpdatePackage(time, package):
-    package.setStatus(2, time)
-    package_hashtable.update(package.getID(), package)
-
-
-def CheckDistance(current_location, package_list):
-    distance_list = []
-    for i in range(len(package_list)):
-        package = package_list[i]
-        distance = distance_graph.search(current_location, package.getAddress())
-        distance_list.append(distance[0])
-        current_location = package.getAddress()
-
-    return current_location, distance_list

@@ -1,8 +1,8 @@
 # Name: Sabre Reyn Nakaahiki | Student ID: 001208343
 from datetime import datetime
 
-import Package
 import CSV
+import Package
 import Trucks
 from Trucks import first_truck, second_truck
 from CSV import package_hashtable

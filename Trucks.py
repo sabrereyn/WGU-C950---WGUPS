@@ -25,38 +25,27 @@ class Truck:
         return self.mileage
 
     def LoadPackageList(self, package_list):
+        """ Load packages into list on truck.
+
+        Time-complexity of O(n)
+
+        :param package_list: List of packages to add on to truck
+        """
         for i in range(len(package_list)):
             p = package_list[i]
             p.setStatus(2, self.truck_time)
             self.package_list.append(p)
 
-    def LoadTruckList(self, package_list):
-        for i in range(len(package_list)):
-            self.truck_list.append(package_list[i])
-    """
-    def RemovePackage(self, package):
-        for i in range(len(self.priority_list)):
-            p = self.priority_list[i]
-            if p.getID() == package.getID():
-                self.priority_list.remove(p)
-                return True
-    """
-
     def LoadTruckAgenda(self):
+        """ Run the package_list to the Greedy algorithm then call Deliver_Package
+
+        Time-complexity of O(1)
+
+        :return: True once all packages are delivered
+        """
         delivery_list, distance_list = \
             Find_Shortest_Distance(self.current_location, self.package_list)
         if self.Deliver_Package(distance_list, delivery_list):
-            return True
-
-    def LoadTruck(self, packages, delivery_list):
-        if self.capacity == 0:
-            return False
-        else:
-            self.capacity -= 1
-            package = packages
-            package.setStatus(2, self.truck_time)
-            package_hashtable.update(package.getID(), package)
-            delivery_list.append(packages)
             return True
 
     def Deliver_Package(self, distance_list, delivery_list):
@@ -66,6 +55,7 @@ class Truck:
         current location. After package is delivered update status in hashtable,
         delete package from truck's list and move on to next package.
 
+        Time-complexity of O(n)
         """
         for i in range(len(distance_list)):
             self.mileage += distance_list[i]
@@ -104,6 +94,7 @@ linked_packages = []        # Holds packages that must be delivered together
 end_of_day = datetime.now().replace(hour=19, minute=0)  # End of day time for comparison
 
 # Iterate through package list and insert elements into hash table using package's id as key
+# Time complexity of O(n^2) with worst case scenario
 for i in range(len(general_list)):
     package = general_list[i]
     package_hashtable.insert(package.getID(), package)
@@ -136,6 +127,8 @@ for i in range(len(general_list)):
     if package is None:
         general_list[i] = None
 
+# Loop through leftover list
+# Time complexity of O(n^2) with worst case scenario
 for i in range(len(general_list)):
     try:
         for j in range(len(second_truck_list_one)):
@@ -148,17 +141,16 @@ for i in range(len(general_list)):
                 first_truck_list_one.append(general_list[i])
                 general_list[i] = None
 
-        for j in range(len(first_truck_list_one)):
-            if general_list[i].getAddress() == first_truck_list_one[j].getAddress():
-                first_truck_list_one.append(general_list[i])
-                general_list[i] = None
-
         if general_list[i].getDeadline().time() < end_of_day.time():
             first_truck_list_one.append(general_list[i])
             general_list[i] = None
     except AttributeError:
         pass
 
+# Loop through leftover packages and find all packages with similar addresses
+# to packages in list for first truck. If the length of the list reaches 16 (the maximum capacity of truck)
+# break the loop.
+# Time complexity of O(n^2)
 for i in range(len(first_truck_list_one)):
     for j in range(len(general_list)):
         try:
@@ -170,22 +162,33 @@ for i in range(len(first_truck_list_one)):
         except AttributeError:
             continue
 
+# Clear out elements that are None
 general_list = list(filter(lambda x: x is not None, general_list))
 
 general_list = Distances.Sort_By_Distance(general_list)
 half = len(general_list)//2
 first_half = general_list[:half]
 second_half = general_list[half:]
+
+# Append first half of list to the second list of first truck
+# Time complexity of O(n)
 for i in range(len(first_half)):
     first_truck_list_two.append(first_half[i])
+
+# Append last half of list to the second list of second truck
+# Time complexity of O(n)
 for i in range(len(second_half)):
     second_truck_list_two.append(second_half[i])
 
+# Loads list for first truck then calls LoadTruckAgenda.
+# If it returns true, continue on to second list.
 first_truck.LoadPackageList(first_truck_list_one)
 if first_truck.LoadTruckAgenda():
     first_truck.LoadPackageList(first_truck_list_two)
     first_truck.LoadTruckAgenda()
 
+# Loads list for second truck then calls LoadTruckAgenda.
+# If it returns true, continue on to second list.
 second_truck.LoadPackageList(second_truck_list_one)
 if second_truck.LoadTruckAgenda():
     second_truck.LoadPackageList(second_truck_list_two)
