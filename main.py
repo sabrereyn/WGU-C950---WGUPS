@@ -33,29 +33,12 @@ class Main:
             exit()
         elif choice == "1":
             while choice == "1":
-                id = int(input("Enter package's id: "))
-                hrs = int(input("Please enter hour (Ex: 10 or 18): "))
-                mns = int(input("Please enter minute (Ex: 0 or 60): "))
-                lookup_time = datetime.now().replace(hour=hrs, minute=mns, second=0)
-                package = package_hashtable.search(id)
-                if package.getTimeAtStatus(3) != "N/A" and package.getTimeAtStatus(3).time() <= lookup_time.time():
-                    print(package, f"\t{PackageStatus(3).name} at {package.getTimeAtStatus(3).time().strftime(time_format)}")
-                elif package.getTimeAtStatus(2) != "N/A" and package.getTimeAtStatus(2).time() <= lookup_time.time():
-                    print(package, f"\t{PackageStatus(2).name} at {lookup_time.time().strftime(time_format)}")
-                elif package.getTimeAtStatus(1).time() <= lookup_time.time():
-                    print(package, f"\t{PackageStatus(1).name} at {lookup_time.time().strftime(time_format)}")
-                else:
-                    print(package, "\tStatus: Package not received yet")
-                print()
-                choice = input("Enter 1 to look up another package or 0 to go back: ")
-                print()
-        elif choice == "2":
-            while choice == "2":
-                hrs = int(input("Please enter hour (Ex: 10 or 18): "))
-                mns = int(input("Please enter minute (Ex: 0 or 60): "))
-                lookup_time = datetime.now().replace(hour=hrs, minute=mns, second=0)
-                for i in range(package_count + 1)[1:]:
-                    package = package_hashtable.search(i)
+                try:
+                    id = int(input("Enter package's id: "))
+                    hrs = int(input("Please enter hour (Ex: 10 or 18): "))
+                    mns = int(input("Please enter minute (Ex: 0 or 60): "))
+                    lookup_time = datetime.now().replace(hour=hrs, minute=mns, second=0)
+                    package = package_hashtable.search(id)
                     if package.getTimeAtStatus(3) != "N/A" and package.getTimeAtStatus(3).time() <= lookup_time.time():
                         print(package, f"\t{PackageStatus(3).name} at {package.getTimeAtStatus(3).time().strftime(time_format)}")
                     elif package.getTimeAtStatus(2) != "N/A" and package.getTimeAtStatus(2).time() <= lookup_time.time():
@@ -64,8 +47,31 @@ class Main:
                         print(package, f"\t{PackageStatus(1).name} at {lookup_time.time().strftime(time_format)}")
                     else:
                         print(package, "\tStatus: Package not received yet")
-                print()
-                choice = input("Press 2 to choose another time or 0 to go back: ")
+                    print()
+                    choice = input("Enter 1 to look up another package or any other key to go back: ")
+                    print()
+                except ValueError:
+                    print("Invalid input.")
+        elif choice == "2":
+            while choice == "2":
+                try:
+                    hrs = int(input("Please enter hour (Ex: 10 or 18): "))
+                    mns = int(input("Please enter minute (Ex: 0 or 59): "))
+                    lookup_time = datetime.now().replace(hour=hrs, minute=mns, second=0)
+                    for i in range(package_count + 1)[1:]:
+                        package = package_hashtable.search(i)
+                        if package.getTimeAtStatus(3) != "N/A" and package.getTimeAtStatus(3).time() <= lookup_time.time():
+                            print(package, f"\t{PackageStatus(3).name} at {package.getTimeAtStatus(3).time().strftime(time_format)}")
+                        elif package.getTimeAtStatus(2) != "N/A" and package.getTimeAtStatus(2).time() <= lookup_time.time():
+                            print(package, f"\t{PackageStatus(2).name} at {lookup_time.time().strftime(time_format)}")
+                        elif package.getTimeAtStatus(1).time() <= lookup_time.time():
+                            print(package, f"\t{PackageStatus(1).name} at {lookup_time.time().strftime(time_format)}")
+                        else:
+                            print(package, "\tStatus: Package not received yet")
+                    print()
+                    choice = input("Press 2 to choose another time or any other key to go back: ")
+                except ValueError:
+                    print("Invalid input.")
         elif choice == "3":
             print("Trucks delivered all packages with a total mileage of %.2f" % (
                     first_truck.getMileage() + second_truck.getMileage()))
