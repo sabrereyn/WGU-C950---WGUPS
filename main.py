@@ -36,7 +36,7 @@ class Main:
                 try:
                     id = int(input("Enter package's id: "))
                     hrs = int(input("Please enter hour (Ex: 10 or 18): "))
-                    mns = int(input("Please enter minute (Ex: 0 or 60): "))
+                    mns = int(input("Please enter minute (Ex: 0 or 59): "))
                     lookup_time = datetime.now().replace(hour=hrs, minute=mns, second=0)
                     package = package_hashtable.search(id)
                     if package.getTimeAtStatus(3) != "N/A" and package.getTimeAtStatus(3).time() <= lookup_time.time():
