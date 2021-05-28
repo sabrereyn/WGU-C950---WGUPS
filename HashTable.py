@@ -6,6 +6,9 @@ class ChainingHashTable:
         Passes passed in parameter to LargestPrimeFactor function for hash table's capacity
         Then assigns all buckets with empty list.
 
+        Time complexity of O(n)
+        Space complexity O(1)
+
         :param list_length: length of a list
         """
         self.table = []
@@ -57,7 +60,7 @@ class ChainingHashTable:
     def search(self, key):
         """ Searches for a value with matching key
 
-        Time complexity of O(1)
+        Time complexity of O(n)
 
         :param key: The key to find a specific value with
         :return: None if value couldn't be found or the value itself
@@ -78,6 +81,7 @@ def LargestPrimeFactor(num):
     It is best practice to use greatest prime factor for hash table's
     capacity. This method calculates the greatest prime factor using the
     int passed in and returns the prime integer.
+    Time complexity of O(logn)
 
     :param num: length of list
     :return: prime number for hashtable capacity
