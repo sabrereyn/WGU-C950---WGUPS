@@ -1,5 +1,4 @@
 # Package Class
-from datetime import datetime
 from enum import Enum
 
 
@@ -86,16 +85,3 @@ class Package:
 
     def getNotes(self):
         return self.notes
-
-"""
-def SortByDeadline(hashtable):
-    sort_list = []
-    for i in range(len(hashtable.table)):
-        for j in hashtable.table[i]:
-            package = hashtable.search(j[0])
-            sort_list.append(hashtable.search(package.getID()))
-
-    sort_list = sorted(sort_list, key=lambda x: datetime.strptime(x.deadline, '%I:%M %p'))
-    for i in range(len(sort_list)):
-        print(sort_list[i])
-"""
