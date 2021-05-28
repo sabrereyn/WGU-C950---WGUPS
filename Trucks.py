@@ -72,11 +72,7 @@ class Truck:
             self.package_list.remove(package)
             package.setStatus(3, self.truck_time)
             package_hashtable.update(package.getID(), package)
-            print(package)
             self.capacity += 1
-        print(f"Time at hub: {self.truck_time.time()}")
-        print(f'Mileage: {self.mileage}')
-        print()
         return True
 
 
