@@ -1,9 +1,7 @@
 import sys
-
 from CSV import distance_graph
 
 
-# general_list = p_list
 def Find_Shortest_Distance(start, package_list):
     """Sorting method that uses the Greedy algorithm approach.
 
@@ -32,7 +30,7 @@ def Find_Shortest_Distance(start, package_list):
     next_delivery = None
 
     # Time-complexity of O(n^2)
-    # Space-complexity of O(1)
+    # Space-complexity of O(n)
     for i in range(len(package_list)):
         min_distance = sys.maxsize
         for j in range(len(package_list))[i:]:
@@ -65,7 +63,6 @@ def Sort_By_Distance(package_list):
     :param package_list: package list to sort.
     :return: the package list sorted by distance.
     """
-    print("Sorting by shortest distance")
     next_delivery = None
     current_location = "4001 South 700 East"
 
